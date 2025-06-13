@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patriot Arena - Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#111827',
+            accent: '#60A5FA',
+          },
+          fontFamily: {
+            'sans': ['Poppins', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .backdrop-blur {
+      backdrop-filter: blur(8px);
+    }
+
+    /* Text Primary Color - Accessible for both light and dark themes */
+    .text-primary {
+      --tw-text-opacity: 1 !important;
+      color: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+      /* #1E3A8A - blue-800 for light theme */
+    }
+
+    .dark .text-primary {
+      --tw-text-opacity: 1 !important;
+      color: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+      /* #93C5FD - blue-300 for dark theme */
+    }
+
+    /* Specific rules for SVG elements with text-primary class */
+    svg.text-primary {
+      --tw-text-opacity: 1 !important;
+      color: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+      stroke: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+      fill: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+    }
+
+    .dark svg.text-primary {
+      --tw-text-opacity: 1 !important;
+      color: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+      stroke: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+      fill: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+    }
+
+    /* For SVG elements inside elements with text-primary class */
+    .text-primary svg {
+      --tw-text-opacity: 1 !important;
+      color: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+      stroke: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+      fill: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+    }
+
+    .dark .text-primary svg {
+      --tw-text-opacity: 1 !important;
+      color: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+      stroke: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+      fill: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+    }
+
+    /* Dark mode styles */
+    .dark body {
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
+
+    .dark .bg-white {
+      background-color: #1e293b;
+    }
+
+    .dark .text-gray-800 {
+      color: #f1f5f9;
+    }
+
+    .dark .text-gray-600 {
+      color: #cbd5e1;
+    }
+
+    .dark .text-secondary {
+      color: #f1f5f9;
+    }
+
+    .dark .border-gray-200 {
+      border-color: #334155;
+    }
+  </style>
+</head>
+
+<body class="font-sans text-gray-800 overflow-x-hidden dark:bg-gray-900 dark:text-white">
+  <!-- Hero Section -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <video autoplay muted loop class="absolute w-full h-full object-cover">
+      <source src="assets/live-video.mp4" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/80"></div>
+
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-aos="fade-up">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+        Patriot Arena
+      </h1>
+      <p class="text-xl sm:text-2xl text-white/90 mb-12 max-w-2xl mx-auto">
+        Uniting Our Community, One Event at a Time
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#events"
+          class="inline-flex items-center px-8 py-3 text-lg font-medium rounded-lg text-white bg-accent hover:bg-accent/90 transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl">
+          Explore Events
+          <svg class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+          </svg>
+        </a>
+        <a href="planner.html"
+          class="inline-flex items-center px-8 py-3 text-lg font-medium rounded-lg text-white border-2 border-white hover:bg-white hover:text-primary transform hover:-translate-y-1 transition-all duration-300">
+          Plan Your Event
+          <svg class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              d="M8 9a1 1 0 100-2 1 1 0 000 2zm0 4a1 1 0 100-2 1 1 0 000 2zm-4-4a1 1 0 100-2 1 1 0 000 2zm0 4a1 1 0 100-2 1 1 0 000 2zm8-8a1 1 0 100-2 1 1 0 000 2zm0 4a1 1 0 100-2 1 1 0 000 2zm0 4a1 1 0 100-2 1 1 0 000 2z" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="events" class="py-20 bg-gray-50 dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold text-secondary dark:text-white mb-4">Upcoming Events</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          Don't miss out on these exciting upcoming events at Patriot Arena
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Basketball Championship Card -->
+        <div
+          class="group bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300"
+          data-aos="fade-up" data-aos-delay="100">
+          <div class="relative">
+            <img
+              src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/rockcms/2024-05/240509-nba-game-ch-1311-f72588.jpg"
+              alt="Basketball Championship"
+              class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 right-4 bg-primary text-white rounded-lg p-2 text-center shadow-md">
+              <span class="block text-2xl font-bold leading-none">19</span>
+              <span class="block text-sm uppercase">JAN</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold text-secondary dark:text-white mb-2">Basketball Championship</h3>
+            <div class="flex items-center text-gray-500 dark:text-gray-300 mb-4">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+              </svg>
+              <span>7:00 PM - January 19, 2025</span>
+            </div>
+            <a href="sports.html"
+              class="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-all duration-300">
+              View Details
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Local Trade Show Card -->
+        <div
+          class="group bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300"
+          data-aos="fade-up" data-aos-delay="200">
+          <div class="relative">
+            <img
+              src="https://img.tradefest.io/filters:quality(80)/filters:format(.webp)/fit-in/1920x0/tradefest/static/tradeshow-illustration.jpeg"
+              alt="Local Trade Show"
+              class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 right-4 bg-primary text-white rounded-lg p-2 text-center shadow-md">
+              <span class="block text-2xl font-bold leading-none">21</span>
+              <span class="block text-sm uppercase">JAN</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold text-secondary dark:text-white mb-2">Local Trade Show</h3>
+            <div class="flex items-center text-gray-500 dark:text-gray-300 mb-4">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+              </svg>
+              <span>10:00 AM - January 21, 2025</span>
+            </div>
+            <a href="concerts.html"
+              class="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-all duration-300">
+              View Details
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Science Competition Card -->
+        <div
+          class="group bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300"
+          data-aos="fade-up" data-aos-delay="300">
+          <div class="relative">
+            <img
+              src="https://media.istockphoto.com/id/1457587318/photo/male-doctor-giving-lecture-or-presentation-at-medical-seminar.jpg"
+              alt="Science Competition"
+              class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 right-4 bg-primary text-white rounded-lg p-2 text-center shadow-md">
+              <span class="block text-2xl font-bold leading-none">22</span>
+              <span class="block text-sm uppercase">DEC</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold text-secondary dark:text-white mb-2">Science Competition</h3>
+            <div class="flex items-center text-gray-500 dark:text-gray-300 mb-4">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+              </svg>
+              <span>9:00 AM - December 22, 2024</span>
+            </div>
+            <a href="school.html"
+              class="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-all duration-300">
+              View Details
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Show More Events Button -->
+      <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
+        <a href="calendar.html"
+          class="inline-flex items-center px-6 py-3 text-lg font-medium rounded-lg text-white bg-secondary hover:bg-secondary/90 transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl">
+          View All Events
+          <svg class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="py-20 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold text-secondary dark:text-white mb-4">Our Services</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          Everything you need to make your event a success
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <!-- Ticket Booking Service -->
+        <div class="relative group" data-aos="fade-up" data-aos-delay="100">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+          </div>
+          <div
+            class="relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform group-hover:-translate-y-2 transition-all duration-300">
+            <div class="p-8">
+              <div class="w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center mb-6">
+                <img src="assets/ticket-booking.png" alt="Ticket Booking" class="w-10 h-10">
+              </div>
+              <h3 class="text-2xl font-semibold text-secondary dark:text-white mb-4">Ticket Booking</h3>
+              <p class="text-gray-600 dark:text-gray-300 mb-6">
+                Quick and easy ticket booking for all events. Secure your seats in just a few clicks.
+              </p>
+              <a href="box-office.html"
+                class="inline-flex items-center text-primary hover:text-accent transition-colors">
+                <span class="font-medium">Book Tickets</span>
+                <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none"
+                  stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </div>
+            <div
+              class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Planning Service -->
+        <div class="relative group" data-aos="fade-up" data-aos-delay="200">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+          </div>
+          <div
+            class="relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform group-hover:-translate-y-2 transition-all duration-300">
+            <div class="p-8">
+              <div class="w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center mb-6">
+                <img src="assets/event-planning.png" alt="Event Planning" class="w-10 h-10">
+              </div>
+              <h3 class="text-2xl font-semibold text-secondary dark:text-white mb-4">Event Planning</h3>
+              <p class="text-gray-600 dark:text-gray-300 mb-6">
+                Professional event planning services to make your event memorable and successful.
+              </p>
+              <a href="planner.html" class="inline-flex items-center text-primary hover:text-accent transition-colors">
+                <span class="font-medium">Plan Event</span>
+                <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none"
+                  stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </div>
+            <div
+              class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="py-20 bg-gray-50 dark:bg-gray-800 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Content -->
+        <div class="relative" data-aos="fade-right">
+          <div class="absolute -left-4 -top-4 w-20 h-20 bg-primary/10 dark:bg-primary/20 rounded-full"></div>
+          <div class="relative">
+            <h2 class="text-3xl md:text-4xl font-bold text-secondary dark:text-white mb-6">About Patriot Arena</h2>
+            <div class="space-y-6 text-gray-600 dark:text-gray-300">
+              <p class="text-lg leading-relaxed">
+                Patriot Arena is a revolutionary entertainment platform dedicated to transforming how people experience
+                movies, events, and community gatherings. We serve as a hub for students, families, and the wider
+                community to come together and celebrate shared moments of joy and excitement.
+              </p>
+              <p class="text-lg leading-relaxed">
+                Our mission is to create seamless, engaging, and memorable experiences that foster connection,
+                creativity, and community spirit, all while enhancing the educational and cultural opportunities
+                available within our school and beyond.
+              </p>
+              <div class="pt-4">
+                <a href="/about-us.html"
+                  class="inline-flex items-center px-6 py-3 text-lg font-medium rounded-lg text-white bg-primary hover:bg-primary/90 transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl group">
+                  Learn More
+                  <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="relative" data-aos="fade-left">
+          <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl transform rotate-3">
+          </div>
+          <div class="relative transform -rotate-3 transition-transform group hover:rotate-0">
+            <img src="assets/about-basketball.png" alt="About Patriot Arena"
+              class="rounded-xl shadow-2xl w-full h-auto object-cover transform transition-transform group-hover:scale-105">
+            <div
+              class="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity">
+            </div>
+          </div>
+          <!-- Decorative elements -->
+          <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-accent/10 dark:bg-accent/20 rounded-full"></div>
+          <div class="absolute -top-8 right-8 w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-full"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <img src="assets/green-lantern-concert.png" alt="green-lantern-concert-img" width="75%" class="mx-auto mt-4 mb-16">
+
+  <!-- ChatBot Script -->
+  <script>
+    window.addEventListener('mouseover', initLandbot, { once: true });
+    window.addEventListener('touchstart', initLandbot, { once: true });
+    var myLandbot;
+    function initLandbot() {
+      if (!myLandbot) {
+        var s = document.createElement('script');
+        s.type = "module"
+        s.async = true;
+        s.addEventListener('load', function () {
+          var myLandbot = new Landbot.Livechat({
+            configUrl: 'https://storage.googleapis.com/landbot.site/v3/H-2851272-Q9LAFREW126LFZTM/index.json',
+          });
+        });
+        s.src = 'https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+      }
+    }
+  </script>
+
+  <!-- Shared Components Script -->
+  <script src="js/shared-components.js"></script>
+
+  <!-- AOS Animation Script -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize shared components
+      initSharedComponents();
+
+      // Initialize AOS animations
+      AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 50
+      });
+    });
+  </script>
+</body>
+
+</html>

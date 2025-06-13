@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Seating Map - Patriot Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E3A8A',
+                        secondary: '#111827',
+                        accent: '#60A5FA',
+                    },
+                    fontFamily: {
+                        'sans': ['Poppins', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .backdrop-blur {
+            backdrop-filter: blur(8px);
+        }
+
+        /* Stadium Map Styles */
+        .stage-section {
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+        }
+
+        .stage-section:hover {
+            transform: scale(1.08);
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.25));
+            opacity: 0.95;
+        }
+
+        .stage-section.selected {
+            transform: scale(1.12);
+            filter: drop-shadow(0 16px 32px rgba(30, 58, 138, 0.4));
+            stroke-width: 4px !important;
+            stroke: #1E3A8A !important;
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 16px 32px rgba(30, 58, 138, 0.4));
+            }
+
+            50% {
+                filter: drop-shadow(0 20px 40px rgba(59, 130, 246, 0.6));
+            }
+        }
+
+        /* Ensure SVG elements are clickable */
+        svg .stage-section {
+            cursor: pointer;
+            pointer-events: all;
+        }
+
+        svg .stage-section rect {
+            pointer-events: all;
+        }
+
+        svg .stage-section text {
+            pointer-events: none;
+        }
+
+        svg .stage-section circle {
+            pointer-events: none;
+        }
+
+        /* Glow effect for filtering */
+        .glow-effect {
+            animation: section-glow 1.5s ease-in-out;
+        }
+
+        @keyframes section-glow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 16px 32px rgba(30, 58, 138, 0.4));
+            }
+
+            50% {
+                filter: drop-shadow(0 20px 40px rgba(59, 130, 246, 0.6));
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .stage-section {
+                stroke-width: 2px;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div class="page-transition">
+        <!-- Header will be injected by shared-components.js -->
+
+        <!-- Hero Section -->
+        <section class="relative pt-32 pb-12">
+            <!-- Background Pattern -->
+            <div
+                class="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 dark:from-primary/10 dark:to-accent/10">
+                <div
+                    class="absolute inset-0 bg-grid-slate-900/[0.04] bg-[length:40px_40px] dark:bg-grid-slate-100/[0.03]">
+                </div>
+            </div>
+
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6"
+                        data-aos="fade-down">
+                        Interactive Seating Map
+                    </h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8" data-aos="fade-up"
+                        data-aos-delay="200">
+                        Select your perfect seats with our interactive 3D arena map. Explore different sections, view
+                        prices, and book instantly.
+                    </p>
+
+                    <!-- Event Selector -->
+                    <div class="flex flex-wrap justify-center gap-4 mb-8" data-aos="fade-up" data-aos-delay="400">
+                        <button onclick="loadEvent('basketball')"
+                            class="event-btn px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all transform hover:scale-105 active">
+                            🏀 Basketball Game
+                        </button>
+                        <button onclick="loadEvent('concert')"
+                            class="event-btn px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all transform hover:scale-105">
+                            🎵 Concert
+                        </button>
+                        <button onclick="loadEvent('conference')"
+                            class="event-btn px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all transform hover:scale-105">
+                            🎤 Conference
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Interactive Map Section -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- Interactive Stadium Map -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 seat-info-panel"
+                        data-aos="fade-right">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Arena Layout</h2>
+                            <div class="flex items-center space-x-4">
+                                <button onclick="resetView()"
+                                    class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
+                                    Reset View
+                                </button>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">
+                                    Click sections to select
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Enhanced Stadium SVG -->
+                        <div
+                            class="bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg p-8 relative overflow-hidden">
+                            <!-- Background pattern -->
+                            <div class="absolute inset-0 opacity-10">
+                                <div
+                                    class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,58,138,0.1)_0%,transparent_70%)]">
+                                </div>
+                            </div>
+
+                            <svg viewBox="0 0 800 600" class="w-full h-auto max-h-[500px]"
+                                style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">
+
+                                <!-- Enhanced Gradient definitions -->
+                                <defs>
+                                    <linearGradient id="stageGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#1E3A8A;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#3B82F6;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="vipGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#FEF3C7;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#FCD34D;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="premiumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#D1FAE5;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#34D399;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="standardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#DBEAFE;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
+                                    </linearGradient>
+                                    <filter id="glow">
+                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur" />
+                                            <feMergeNode in="SourceGraphic" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+
+                                <!-- Arena Background -->
+                                <ellipse cx="400" cy="300" rx="380" ry="280" fill="#F8FAFC" stroke="#E5E7EB"
+                                    stroke-width="2" opacity="0.8" />
+
+                                <!-- Arena Floor -->
+                                <ellipse cx="400" cy="300" rx="350" ry="250" fill="#FFFFFF" stroke="#D1D5DB"
+                                    stroke-width="1" opacity="0.5" />
+
+                                <!-- Center Stage/Court Area -->
+                                <rect x="300" y="220" width="200" height="160" rx="16" fill="url(#stageGradient)"
+                                    stroke="#1E3A8A" stroke-width="4" />
+                                <text x="400" y="305" text-anchor="middle" fill="white" font-weight="bold"
+                                    font-size="24" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">STAGE</text>
+
+                                <!-- VIP SECTIONS (Close to Stage) -->
+                                <g class="stage-section" data-section="VIP-1" data-price="750" data-available="24"
+                                    data-level="VIP">
+                                    <rect x="150" y="250" width="120" height="70" rx="12" fill="url(#vipGradient)"
+                                        stroke="#F59E0B" stroke-width="3" />
+                                    <text x="210" y="285" text-anchor="middle" fill="#92400E" font-weight="bold"
+                                        font-size="18">VIP 1</text>
+                                    <text x="210" y="305" text-anchor="middle" fill="#92400E" font-size="14">$750</text>
+                                    <circle cx="180" cy="265" r="8" fill="#F59E0B" />
+                                    <text x="180" y="270" text-anchor="middle" fill="white" font-size="10">★</text>
+                                </g>
+
+                                <g class="stage-section" data-section="VIP-2" data-price="750" data-available="24"
+                                    data-level="VIP">
+                                    <rect x="530" y="250" width="120" height="70" rx="12" fill="url(#vipGradient)"
+                                        stroke="#F59E0B" stroke-width="3" />
+                                    <text x="590" y="285" text-anchor="middle" fill="#92400E" font-weight="bold"
+                                        font-size="18">VIP 2</text>
+                                    <text x="590" y="305" text-anchor="middle" fill="#92400E" font-size="14">$750</text>
+                                    <circle cx="620" cy="265" r="8" fill="#F59E0B" />
+                                    <text x="620" y="270" text-anchor="middle" fill="white" font-size="10">★</text>
+                                </g>
+
+                                <!-- PREMIUM SECTIONS (Mid-range) -->
+                                <g class="stage-section" data-section="PREM-1" data-price="450" data-available="40"
+                                    data-level="Premium">
+                                    <rect x="100" y="150" width="100" height="80" rx="10" fill="url(#premiumGradient)"
+                                        stroke="#10B981" stroke-width="2" />
+                                    <text x="150" y="185" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                        font-size="16">PREM 1</text>
+                                    <text x="150" y="205" text-anchor="middle" fill="#065F46" font-size="12">$450</text>
+                                </g>
+
+                                <g class="stage-section" data-section="PREM-2" data-price="500" data-available="35"
+                                    data-level="Premium">
+                                    <rect x="250" y="100" width="120" height="60" rx="10" fill="url(#premiumGradient)"
+                                        stroke="#10B981" stroke-width="2" />
+                                    <text x="310" y="135" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                        font-size="16">PREM 2</text>
+                                    <text x="310" y="152" text-anchor="middle" fill="#065F46" font-size="12">$500</text>
+                                </g>
+
+                                <g class="stage-section" data-section="PREM-3" data-price="500" data-available="35"
+                                    data-level="Premium">
+                                    <rect x="430" y="100" width="120" height="60" rx="10" fill="url(#premiumGradient)"
+                                        stroke="#10B981" stroke-width="2" />
+                                    <text x="490" y="135" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                        font-size="16">PREM 3</text>
+                                    <text x="490" y="152" text-anchor="middle" fill="#065F46" font-size="12">$500</text>
+                                </g>
+
+                                <g class="stage-section" data-section="PREM-4" data-price="450" data-available="40"
+                                    data-level="Premium">
+                                    <rect x="600" y="150" width="100" height="80" rx="10" fill="url(#premiumGradient)"
+                                        stroke="#10B981" stroke-width="2" />
+                                    <text x="650" y="185" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                        font-size="16">PREM 4</text>
+                                    <text x="650" y="205" text-anchor="middle" fill="#065F46" font-size="12">$450</text>
+                                </g>
+
+                                <g class="stage-section" data-section="PREM-5" data-price="450" data-available="40"
+                                    data-level="Premium">
+                                    <rect x="100" y="370" width="100" height="80" rx="10" fill="url(#premiumGradient)"
+                                        stroke="#10B981" stroke-width="2" />
+                                    <text x="150" y="405" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                        font-size="16">PREM 5</text>
+                                    <text x="150" y="425" text-anchor="middle" fill="#065F46" font-size="12">$450</text>
+                                </g>
+
+                                <g class="stage-section" data-section="PREM-6" data-price="400" data-available="45"
+                                    data-level="Premium">
+                                    <rect x="250" y="440" width="120" height="60" rx="10" fill="url(#premiumGradient)"
+                                        stroke="#10B981" stroke-width="2" />
+                                    <text x="310" y="475" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                        font-size="16">PREM 6</text>
+                                    <text x="310" y="492" text-anchor="middle" fill="#065F46" font-size="12">$400</text>
+                                </g>
+
+                                <g class="stage-section" data-section="PREM-7" data-price="400" data-available="45"
+                                    data-level="Premium">
+                                    <rect x="430" y="440" width="120" height="60" rx="10" fill="url(#premiumGradient)"
+                                        stroke="#10B981" stroke-width="2" />
+                                    <text x="490" y="475" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                        font-size="16">PREM 7</text>
+                                    <text x="490" y="492" text-anchor="middle" fill="#065F46" font-size="12">$400</text>
+                                </g>
+
+                                <g class="stage-section" data-section="PREM-8" data-price="450" data-available="40"
+                                    data-level="Premium">
+                                    <rect x="600" y="370" width="100" height="80" rx="10" fill="url(#premiumGradient)"
+                                        stroke="#10B981" stroke-width="2" />
+                                    <text x="650" y="405" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                        font-size="16">PREM 8</text>
+                                    <text x="650" y="425" text-anchor="middle" fill="#065F46" font-size="12">$450</text>
+                                </g>
+
+                                <!-- STANDARD SECTIONS (Outer areas) -->
+                                <g class="stage-section" data-section="STD-1" data-price="200" data-available="80"
+                                    data-level="Standard">
+                                    <rect x="50" y="50" width="90" height="90" rx="8" fill="url(#standardGradient)"
+                                        stroke="#3B82F6" stroke-width="2" />
+                                    <text x="95" y="95" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                        font-size="16">STD 1</text>
+                                    <text x="95" y="115" text-anchor="middle" fill="#1E40AF" font-size="12">$200</text>
+                                </g>
+
+                                <g class="stage-section" data-section="STD-2" data-price="220" data-available="70"
+                                    data-level="Standard">
+                                    <rect x="200" y="20" width="140" height="70" rx="8" fill="url(#standardGradient)"
+                                        stroke="#3B82F6" stroke-width="2" />
+                                    <text x="270" y="55" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                        font-size="16">STD 2</text>
+                                    <text x="270" y="72" text-anchor="middle" fill="#1E40AF" font-size="12">$220</text>
+                                </g>
+
+                                <g class="stage-section" data-section="STD-3" data-price="220" data-available="70"
+                                    data-level="Standard">
+                                    <rect x="460" y="20" width="140" height="70" rx="8" fill="url(#standardGradient)"
+                                        stroke="#3B82F6" stroke-width="2" />
+                                    <text x="530" y="55" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                        font-size="16">STD 3</text>
+                                    <text x="530" y="72" text-anchor="middle" fill="#1E40AF" font-size="12">$220</text>
+                                </g>
+
+                                <g class="stage-section" data-section="STD-4" data-price="200" data-available="80"
+                                    data-level="Standard">
+                                    <rect x="660" y="50" width="90" height="90" rx="8" fill="url(#standardGradient)"
+                                        stroke="#3B82F6" stroke-width="2" />
+                                    <text x="705" y="95" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                        font-size="16">STD 4</text>
+                                    <text x="705" y="115" text-anchor="middle" fill="#1E40AF" font-size="12">$200</text>
+                                </g>
+
+                                <g class="stage-section" data-section="STD-5" data-price="200" data-available="80"
+                                    data-level="Standard">
+                                    <rect x="50" y="460" width="90" height="90" rx="8" fill="url(#standardGradient)"
+                                        stroke="#3B82F6" stroke-width="2" />
+                                    <text x="95" y="505" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                        font-size="16">STD 5</text>
+                                    <text x="95" y="525" text-anchor="middle" fill="#1E40AF" font-size="12">$200</text>
+                                </g>
+
+                                <g class="stage-section" data-section="STD-6" data-price="180" data-available="90"
+                                    data-level="Standard">
+                                    <rect x="200" y="510" width="140" height="70" rx="8" fill="url(#standardGradient)"
+                                        stroke="#3B82F6" stroke-width="2" />
+                                    <text x="270" y="545" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                        font-size="16">STD 6</text>
+                                    <text x="270" y="562" text-anchor="middle" fill="#1E40AF" font-size="12">$180</text>
+                                </g>
+
+                                <g class="stage-section" data-section="STD-7" data-price="180" data-available="90"
+                                    data-level="Standard">
+                                    <rect x="460" y="510" width="140" height="70" rx="8" fill="url(#standardGradient)"
+                                        stroke="#3B82F6" stroke-width="2" />
+                                    <text x="530" y="545" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                        font-size="16">STD 7</text>
+                                    <text x="530" y="562" text-anchor="middle" fill="#1E40AF" font-size="12">$180</text>
+                                </g>
+
+                                <g class="stage-section" data-section="STD-8" data-price="200" data-available="80"
+                                    data-level="Standard">
+                                    <rect x="660" y="460" width="90" height="90" rx="8" fill="url(#standardGradient)"
+                                        stroke="#3B82F6" stroke-width="2" />
+                                    <text x="705" y="505" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                        font-size="16">STD 8</text>
+                                    <text x="705" y="525" text-anchor="middle" fill="#1E40AF" font-size="12">$200</text>
+                                </g>
+
+                            </svg>
+                        </div>
+
+                        <!-- Price Legend -->
+                        <div class="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 rounded"
+                                    style="background: linear-gradient(45deg, #FEF3C7, #FCD34D); border: 1px solid #F59E0B;">
+                                </div>
+                                <span class="text-sm text-gray-700 dark:text-gray-300">VIP ($750)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 rounded"
+                                    style="background: linear-gradient(45deg, #D1FAE5, #34D399); border: 1px solid #10B981;">
+                                </div>
+                                <span class="text-sm text-gray-700 dark:text-gray-300">Premium ($400-500)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 rounded"
+                                    style="background: linear-gradient(45deg, #DBEAFE, #60A5FA); border: 1px solid #3B82F6;">
+                                </div>
+                                <span class="text-sm text-gray-700 dark:text-gray-300">Standard ($180-220)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seat Details Panel -->
+                <div class="lg:col-span-1">
+                    <!-- Section Information -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 seat-info-panel mb-6"
+                        data-aos="fade-left">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Seat Information</h3>
+
+                        <div id="defaultInfo" class="text-center py-8">
+                            <div
+                                class="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.5-7 0 0 3 2 5 2 1.5 0 2.5 0 2.5 2.5 0 .5.5 1.5 1.5 1.5 0 0 1 1 1 2.5s-.5 1.5-1.5 1.5c-1 0-1-1-2.5-1s-2.5 1-4.5 1c-2 0-5.5-1.5-7.5-3.5" />
+                                </svg>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400">Click on a section to view details</p>
+                        </div>
+
+                        <div id="sectionDetails" class="hidden">
+                            <div class="space-y-4">
+                                <div class="text-center">
+                                    <div class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-2"
+                                        id="sectionBadge">
+                                        <span id="sectionName">Section A1</span>
+                                    </div>
+                                    <div class="text-3xl font-bold text-gray-900 dark:text-white" id="sectionPrice">$320
+                                    </div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">per ticket</div>
+                                </div>
+
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600 dark:text-gray-400">Available Seats:</span>
+                                        <span class="font-semibold text-gray-900 dark:text-white"
+                                            id="availableSeats">45</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600 dark:text-gray-400">Section Level:</span>
+                                        <span class="font-semibold text-gray-900 dark:text-white"
+                                            id="sectionLevel">Premium</span>
+                                    </div>
+                                    <div class="border-t border-gray-200 dark:border-gray-700 pt-3">
+                                        <p class="text-sm text-gray-600 dark:text-gray-400" id="sectionDescription">
+                                            Premium seating with excellent stage view</p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 space-y-3">
+                                    <button onclick="addToCart()"
+                                        class="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary/90 transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg">
+                                        Add to Cart
+                                    </button>
+                                    <button onclick="compareSections()"
+                                        class="w-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-2 px-6 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
+                                        Compare Sections
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Filters -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6" data-aos="fade-left"
+                        data-aos-delay="200">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Quick Filters</h3>
+
+                        <div class="space-y-4">
+                            <!-- Price Range Filter -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Price
+                                    Range</label>
+                                <div class="flex space-x-2">
+                                    <button onclick="filterByPrice('all')"
+                                        class="filter-btn px-3 py-2 text-xs rounded-full bg-primary text-white hover:bg-primary/90 transition-all">
+                                        All
+                                    </button>
+                                    <button onclick="filterByPrice('budget')"
+                                        class="filter-btn px-3 py-2 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
+                                        < $250 </button>
+                                            <button onclick="filterByPrice('mid')"
+                                                class="filter-btn px-3 py-2 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
+                                                $250-500
+                                            </button>
+                                            <button onclick="filterByPrice('premium')"
+                                                class="filter-btn px-3 py-2 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
+                                                $500+
+                                            </button>
+                                </div>
+                            </div>
+
+                            <!-- Section Level Filter -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Section
+                                    Level</label>
+                                <div class="flex space-x-2">
+                                    <button onclick="filterByLevel('all')"
+                                        class="level-filter-btn px-3 py-2 text-xs rounded-full bg-primary text-white hover:bg-primary/90 transition-all">
+                                        All
+                                    </button>
+                                    <button onclick="filterByLevel('VIP')"
+                                        class="level-filter-btn px-3 py-2 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
+                                        VIP
+                                    </button>
+                                    <button onclick="filterByLevel('Premium')"
+                                        class="level-filter-btn px-3 py-2 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
+                                        Premium
+                                    </button>
+                                    <button onclick="filterByLevel('Standard')"
+                                        class="level-filter-btn px-3 py-2 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
+                                        Standard
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Availability Filter -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Availability</label>
+                                <div class="flex items-center space-x-4">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="availableOnly" onchange="filterByAvailability()"
+                                            class="mr-2 rounded border-gray-300 text-primary focus:ring-primary">
+                                        <span class="text-sm text-gray-700 dark:text-gray-300">Available only</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button onclick="resetFilters()"
+                                class="w-full mt-4 px-4 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
+                                Reset Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer will be injected by shared-components.js -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/shared-components.js"></script>
+
+    <script>
+        // Enhanced Interactive Map JavaScript
+        let selectedSection = null;
+        let currentEvent = 'basketball';
+
+        // Event data for different event types
+        const eventData = {
+            basketball: {
+                name: 'Basketball Championship',
+                stageLabel: 'COURT',
+                sections: {
+                    'VIP-1': { price: 750, available: 24, description: 'VIP courtside seating with premium amenities', level: 'VIP' },
+                    'VIP-2': { price: 750, available: 24, description: 'VIP courtside seating with premium amenities', level: 'VIP' },
+                    'PREM-1': { price: 450, available: 40, description: 'Premium lower bowl seating with excellent view', level: 'Premium' },
+                    'PREM-2': { price: 500, available: 35, description: 'Premium front row seating behind the basket', level: 'Premium' },
+                    'PREM-3': { price: 500, available: 35, description: 'Premium front row seating behind the basket', level: 'Premium' },
+                    'PREM-4': { price: 450, available: 40, description: 'Premium lower bowl seating with excellent view', level: 'Premium' },
+                    'PREM-5': { price: 450, available: 40, description: 'Premium lower bowl seating with excellent view', level: 'Premium' },
+                    'PREM-6': { price: 400, available: 45, description: 'Premium seating behind the basket', level: 'Premium' },
+                    'PREM-7': { price: 400, available: 45, description: 'Premium seating behind the basket', level: 'Premium' },
+                    'PREM-8': { price: 450, available: 40, description: 'Premium lower bowl seating with excellent view', level: 'Premium' },
+                    'STD-1': { price: 200, available: 80, description: 'Standard corner seating with good view', level: 'Standard' },
+                    'STD-2': { price: 220, available: 70, description: 'Standard upper seating behind the basket', level: 'Standard' },
+                    'STD-3': { price: 220, available: 70, description: 'Standard upper seating behind the basket', level: 'Standard' },
+                    'STD-4': { price: 200, available: 80, description: 'Standard corner seating with good view', level: 'Standard' },
+                    'STD-5': { price: 200, available: 80, description: 'Standard corner seating with good view', level: 'Standard' },
+                    'STD-6': { price: 180, available: 90, description: 'Standard back seating', level: 'Standard' },
+                    'STD-7': { price: 180, available: 90, description: 'Standard back seating', level: 'Standard' },
+                    'STD-8': { price: 200, available: 80, description: 'Standard corner seating with good view', level: 'Standard' }
+                }
+            },
+            concert: {
+                name: 'Rock Concert',
+                stageLabel: 'STAGE',
+                sections: {
+                    'VIP-1': { price: 950, available: 20, description: 'VIP stage-side with meet & greet access', level: 'VIP' },
+                    'VIP-2': { price: 950, available: 20, description: 'VIP stage-side with meet & greet access', level: 'VIP' },
+                    'PREM-1': { price: 550, available: 35, description: 'Premium concert seating close to stage', level: 'Premium' },
+                    'PREM-2': { price: 600, available: 30, description: 'Premium front concert seating', level: 'Premium' },
+                    'PREM-3': { price: 600, available: 30, description: 'Premium front concert seating', level: 'Premium' },
+                    'PREM-4': { price: 550, available: 35, description: 'Premium concert seating close to stage', level: 'Premium' },
+                    'PREM-5': { price: 550, available: 35, description: 'Premium concert seating close to stage', level: 'Premium' },
+                    'PREM-6': { price: 480, available: 40, description: 'Premium concert seating with great acoustics', level: 'Premium' },
+                    'PREM-7': { price: 480, available: 40, description: 'Premium concert seating with great acoustics', level: 'Premium' },
+                    'PREM-8': { price: 550, available: 35, description: 'Premium concert seating close to stage', level: 'Premium' },
+                    'STD-1': { price: 280, available: 75, description: 'Standard concert seating with good audio', level: 'Standard' },
+                    'STD-2': { price: 320, available: 65, description: 'Standard elevated seating', level: 'Standard' },
+                    'STD-3': { price: 320, available: 65, description: 'Standard elevated seating', level: 'Standard' },
+                    'STD-4': { price: 280, available: 75, description: 'Standard concert seating with good audio', level: 'Standard' },
+                    'STD-5': { price: 280, available: 75, description: 'Standard concert seating with good audio', level: 'Standard' },
+                    'STD-6': { price: 250, available: 85, description: 'Standard back concert seating', level: 'Standard' },
+                    'STD-7': { price: 250, available: 85, description: 'Standard back concert seating', level: 'Standard' },
+                    'STD-8': { price: 280, available: 75, description: 'Standard concert seating with good audio', level: 'Standard' }
+                }
+            },
+            conference: {
+                name: 'Tech Conference',
+                stageLabel: 'STAGE',
+                sections: {
+                    'VIP-1': { price: 500, available: 30, description: 'VIP front row with networking access', level: 'VIP' },
+                    'VIP-2': { price: 500, available: 30, description: 'VIP front row with networking access', level: 'VIP' },
+                    'PREM-1': { price: 300, available: 50, description: 'Premium seating with excellent stage view', level: 'Premium' },
+                    'PREM-2': { price: 350, available: 45, description: 'Premium front seating for presentations', level: 'Premium' },
+                    'PREM-3': { price: 350, available: 45, description: 'Premium front seating for presentations', level: 'Premium' },
+                    'PREM-4': { price: 300, available: 50, description: 'Premium seating with excellent stage view', level: 'Premium' },
+                    'PREM-5': { price: 300, available: 50, description: 'Premium seating with excellent stage view', level: 'Premium' },
+                    'PREM-6': { price: 280, available: 55, description: 'Premium seating with clear sight lines', level: 'Premium' },
+                    'PREM-7': { price: 280, available: 55, description: 'Premium seating with clear sight lines', level: 'Premium' },
+                    'PREM-8': { price: 300, available: 50, description: 'Premium seating with excellent stage view', level: 'Premium' },
+                    'STD-1': { price: 150, available: 100, description: 'Standard conference seating', level: 'Standard' },
+                    'STD-2': { price: 180, available: 90, description: 'Standard elevated conference seating', level: 'Standard' },
+                    'STD-3': { price: 180, available: 90, description: 'Standard elevated conference seating', level: 'Standard' },
+                    'STD-4': { price: 150, available: 100, description: 'Standard conference seating', level: 'Standard' },
+                    'STD-5': { price: 150, available: 100, description: 'Standard conference seating', level: 'Standard' },
+                    'STD-6': { price: 120, available: 110, description: 'Standard back conference seating', level: 'Standard' },
+                    'STD-7': { price: 120, available: 110, description: 'Standard back conference seating', level: 'Standard' },
+                    'STD-8': { price: 150, available: 100, description: 'Standard conference seating', level: 'Standard' }
+                }
+            }
+        };
+
+        // Initialize the map
+        function initializeMap() {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+
+            loadEvent('basketball');
+            setupEventListeners();
+        }
+
+        // Setup event listeners for SVG sections
+        function setupEventListeners() {
+            document.querySelectorAll('.stage-section').forEach(section => {
+                section.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const sectionId = this.getAttribute('data-section');
+                    selectSection(sectionId);
+                });
+
+                section.addEventListener('mouseenter', function () {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = 'scale(1.08)';
+                        this.style.filter = 'drop-shadow(0 12px 24px rgba(0, 0, 0, 0.25))';
+                    }
+                });
+
+                section.addEventListener('mouseleave', function () {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = '';
+                        this.style.filter = '';
+                    }
+                });
+            });
+        }
+
+        // Load event data and update prices
+        function loadEvent(eventType) {
+            currentEvent = eventType;
+            const event = eventData[eventType];
+
+            // Update event buttons
+            document.querySelectorAll('.event-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-primary', 'text-white');
+                btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            });
+
+            event.target = document.querySelector(`button[onclick="loadEvent('${eventType}')"]`);
+            if (event.target) {
+                event.target.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                event.target.classList.add('active', 'bg-primary', 'text-white');
+            }
+
+            // Update stage label
+            const stageText = document.querySelector('svg text');
+            if (stageText) {
+                stageText.textContent = event.stageLabel;
+            }
+
+            // Update section prices and data
+            document.querySelectorAll('.stage-section').forEach(section => {
+                const sectionId = section.getAttribute('data-section');
+                const sectionData = event.sections[sectionId];
+
+                if (sectionData) {
+                    section.setAttribute('data-price', sectionData.price);
+                    section.setAttribute('data-available', sectionData.available);
+                    section.setAttribute('data-level', sectionData.level);
+
+                    // Update price text in SVG
+                    const priceText = section.querySelector('text:last-child');
+                    if (priceText && priceText.textContent.includes('$')) {
+                        priceText.textContent = `$${sectionData.price}`;
+                    }
+                }
+            });
+
+            // Clear selection when switching events
+            if (selectedSection) {
+                resetView();
+            }
+        }
+
+        // Select a section
+        function selectSection(sectionId) {
+            // Remove previous selection
+            if (selectedSection) {
+                selectedSection.classList.remove('selected');
+                selectedSection.style.transform = '';
+                selectedSection.style.filter = '';
+            }
+
+            // Select new section
+            const section = document.querySelector(`[data-section="${sectionId}"]`);
+            if (section) {
+                selectedSection = section;
+                section.classList.add('selected');
+
+                // Update section details panel
+                updateSectionDetails(sectionId);
+
+                // Show section details
+                document.getElementById('defaultInfo').style.display = 'none';
+                document.getElementById('sectionDetails').classList.remove('hidden');
+            }
+        }
+
+        // Update section details panel
+        function updateSectionDetails(sectionId) {
+            const event = eventData[currentEvent];
+            const sectionData = event.sections[sectionId];
+
+            if (sectionData) {
+                document.getElementById('sectionName').textContent = sectionId;
+                document.getElementById('sectionPrice').textContent = `$${sectionData.price}`;
+                document.getElementById('availableSeats').textContent = sectionData.available;
+                document.getElementById('sectionLevel').textContent = sectionData.level;
+                document.getElementById('sectionDescription').textContent = sectionData.description;
+
+                // Update badge color based on level
+                const badge = document.getElementById('sectionBadge');
+                badge.className = 'inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-2';
+
+                switch (sectionData.level) {
+                    case 'VIP':
+                        badge.classList.add('bg-yellow-100', 'text-yellow-800', 'dark:bg-yellow-900', 'dark:text-yellow-200');
+                        break;
+                    case 'Premium':
+                        badge.classList.add('bg-green-100', 'text-green-800', 'dark:bg-green-900', 'dark:text-green-200');
+                        break;
+                    case 'Standard':
+                        badge.classList.add('bg-blue-100', 'text-blue-800', 'dark:bg-blue-900', 'dark:text-blue-200');
+                        break;
+                }
+            }
+        }
+
+        // Reset view
+        function resetView() {
+            if (selectedSection) {
+                selectedSection.classList.remove('selected');
+                selectedSection.style.transform = '';
+                selectedSection.style.filter = '';
+                selectedSection = null;
+            }
+
+            document.getElementById('defaultInfo').style.display = 'block';
+            document.getElementById('sectionDetails').classList.add('hidden');
+
+            // Reset all section styles
+            document.querySelectorAll('.stage-section').forEach(section => {
+                section.classList.remove('glow-effect');
+                section.style.transform = '';
+                section.style.filter = '';
+            });
+        }
+
+        // Filter functions
+        function filterByPrice(range) {
+            resetView();
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-primary', 'text-white');
+                btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            });
+
+            event.target.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            event.target.classList.add('bg-primary', 'text-white');
+
+            document.querySelectorAll('.stage-section').forEach(section => {
+                const price = parseInt(section.getAttribute('data-price'));
+                let show = true;
+
+                switch (range) {
+                    case 'budget':
+                        show = price < 250;
+                        break;
+                    case 'mid':
+                        show = price >= 250 && price <= 500;
+                        break;
+                    case 'premium':
+                        show = price > 500;
+                        break;
+                    case 'all':
+                    default:
+                        show = true;
+                        break;
+                }
+
+                if (show) {
+                    section.classList.add('glow-effect');
+                    setTimeout(() => section.classList.remove('glow-effect'), 1500);
+                } else {
+                    section.style.opacity = '0.3';
+                    setTimeout(() => section.style.opacity = '', 2000);
+                }
+            });
+        }
+
+        function filterByLevel(level) {
+            resetView();
+
+            document.querySelectorAll('.level-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-primary', 'text-white');
+                btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            });
+
+            event.target.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            event.target.classList.add('bg-primary', 'text-white');
+
+            document.querySelectorAll('.stage-section').forEach(section => {
+                const sectionLevel = section.getAttribute('data-level');
+
+                if (level === 'all' || sectionLevel === level) {
+                    section.classList.add('glow-effect');
+                    setTimeout(() => section.classList.remove('glow-effect'), 1500);
+                } else {
+                    section.style.opacity = '0.3';
+                    setTimeout(() => section.style.opacity = '', 2000);
+                }
+            });
+        }
+
+        function filterByAvailability() {
+            const availableOnly = document.getElementById('availableOnly').checked;
+
+            document.querySelectorAll('.stage-section').forEach(section => {
+                const available = parseInt(section.getAttribute('data-available'));
+
+                if (!availableOnly || available > 0) {
+                    section.style.opacity = '';
+                } else {
+                    section.style.opacity = '0.3';
+                }
+            });
+        }
+
+        function resetFilters() {
+            document.querySelectorAll('.filter-btn, .level-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-primary', 'text-white');
+                btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            });
+
+            document.querySelector('.filter-btn').classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            document.querySelector('.filter-btn').classList.add('bg-primary', 'text-white');
+
+            document.querySelector('.level-filter-btn').classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            document.querySelector('.level-filter-btn').classList.add('bg-primary', 'text-white');
+
+            document.getElementById('availableOnly').checked = false;
+
+            document.querySelectorAll('.stage-section').forEach(section => {
+                section.style.opacity = '';
+                section.classList.remove('glow-effect');
+            });
+        }
+
+        // Cart and comparison functions
+        function addToCart() {
+            if (selectedSection) {
+                const sectionId = selectedSection.getAttribute('data-section');
+                alert(`Added ${sectionId} to cart! (This would integrate with your booking system)`);
+            }
+        }
+
+        function compareSections() {
+            alert('Section comparison feature would open here!');
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeMap);
+    </script>
+</body>
+
+</html>

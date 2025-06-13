@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Calendar - Patriot Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Add FullCalendar 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+
+    <!-- Add Animate.css for additional animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E3A8A',
+                        secondary: '#111827',
+                        accent: '#60A5FA',
+                    },
+                    fontFamily: {
+                        'sans': ['Poppins', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .backdrop-blur {
+            backdrop-filter: blur(8px);
+        }
+
+        /* Text Primary Color - Accessible for both light and dark themes */
+        .text-primary {
+            --tw-text-opacity: 1 !important;
+            color: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+            /* #1E3A8A - blue-800 for light theme */
+        }
+
+        .dark .text-primary {
+            --tw-text-opacity: 1 !important;
+            color: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+            /* #93C5FD - blue-300 for dark theme */
+        }
+
+        /* Specific rules for SVG elements with text-primary class */
+        svg.text-primary {
+            --tw-text-opacity: 1 !important;
+            color: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+            stroke: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+            fill: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+        }
+
+        .dark svg.text-primary {
+            --tw-text-opacity: 1 !important;
+            color: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+            stroke: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+            fill: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+        }
+
+        /* For SVG elements inside elements with text-primary class */
+        .text-primary svg {
+            --tw-text-opacity: 1 !important;
+            color: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+            stroke: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+            fill: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+        }
+
+        .dark .text-primary svg {
+            --tw-text-opacity: 1 !important;
+            color: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+            stroke: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+            fill: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+        }
+
+        /* Dark mode styles */
+        .dark body {
+            background-color: #111827;
+            color: #f3f4f6;
+        }
+
+        /* FullCalendar Dark Mode Styling */
+        .dark .fc-theme-standard .fc-scrollgrid,
+        .dark .fc-theme-standard td,
+        .dark .fc-theme-standard th {
+            border-color: #374151;
+        }
+
+        .dark .fc-theme-standard .fc-scrollgrid {
+            border-color: #374151;
+        }
+
+        .dark .fc-col-header-cell-cushion,
+        .dark .fc-daygrid-day-number {
+            color: #f3f4f6;
+        }
+
+        .dark .fc-day-today {
+            background-color: rgba(30, 58, 138, 0.2) !important;
+        }
+
+        .dark .fc-daygrid-day-frame {
+            background-color: #1f2937;
+        }
+
+        .dark .fc-toolbar-title,
+        .dark .fc-col-header-cell-cushion {
+            color: #f3f4f6;
+        }
+
+        .dark .fc-button-primary:not(:disabled) {
+            background-color: #1E3A8A;
+            border-color: #1E3A8A;
+        }
+
+        .dark .fc-button-primary:not(:disabled):hover {
+            background-color: #1e40af;
+            border-color: #1e40af;
+        }
+
+        /* FullCalendar Custom Styling */
+        .fc {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .fc-event {
+            background-color: #1E3A8A;
+            border-color: #1E3A8A;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border-radius: 6px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .fc-event-animated {
+            opacity: 1;
+            transform: translateY(0);
+            animation: eventFadeIn 0.5s ease forwards;
+        }
+
+        @keyframes eventFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fc-event:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+        }
+
+        .fc .fc-button-primary {
+            background-color: #1E3A8A;
+            border-color: #1E3A8A;
+            transition: all 0.3s ease;
+        }
+
+        .fc .fc-button-primary:hover {
+            background-color: #1e40af;
+            border-color: #1e40af;
+            transform: translateY(-1px);
+        }
+
+        .fc .fc-button-primary:not(:disabled):active,
+        .fc .fc-button-primary:not(:disabled).fc-button-active {
+            background-color: #1e40af;
+            border-color: #1e40af;
+        }
+
+        .fc-today-button {
+            background-color: #60A5FA !important;
+            border-color: #60A5FA !important;
+        }
+
+        .fc-today-button:hover {
+            background-color: #3b82f6 !important;
+            border-color: #3b82f6 !important;
+        }
+
+        .fc-toolbar-title {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .fc-daygrid-day.fc-day-today {
+            background-color: rgba(96, 165, 250, 0.1) !important;
+        }
+
+        .fc-daygrid-day-number {
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .fc-daygrid-day:hover .fc-daygrid-day-number {
+            color: #1E3A8A;
+        }
+
+        /* Event Card Animation */
+        .event-card {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        /* Modal Animation */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-animation {
+            animation: modalFadeIn 0.4s ease forwards;
+        }
+
+        /* Calendar loading animation */
+        .calendar-loading {
+            position: relative;
+        }
+
+        .calendar-loading::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+
+        .calendar-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            margin: -20px 0 0 -20px;
+            border: 4px solid #1E3A8A;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            z-index: 11;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Background styles */
+        body {
+            background-color: #e7e7e7;
+        }
+
+        .dark body {
+            background-color: #111827;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900">
+    <div class="page-transition">
+        <!-- Header will be injected by shared-components.js -->
+
+        <!-- Hero Section -->
+        <section class="relative pt-32 pb-20">
+            <!-- Background Pattern -->
+            <div
+                class="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 dark:from-primary/10 dark:to-accent/10">
+                <div
+                    class="absolute inset-0 bg-grid-slate-900/[0.04] bg-[length:40px_40px] dark:bg-grid-slate-100/[0.03]">
+                </div>
+            </div>
+
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1
+                        class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 animate__animated animate__fadeInDown">
+                        Event Calendar
+                    </h1>
+                    <p
+                        class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-10 animate__animated animate__fadeIn animate__delay-1s">
+                        Stay updated with all upcoming events at Patriot Arena
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 transition-all duration-500 transform hover:shadow-2xl"
+                data-aos="fade-up" data-aos-delay="200">
+                <div id="calendarContainer" class="calendar-loading">
+                    <div id="calendar" class="p-2"></div>
+                </div>
+            </div>
+
+            <!-- Calendar Legend -->
+            <div class="mt-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6" data-aos="fade-up"
+                data-aos-delay="100">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Event Types</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="flex items-center">
+                        <button class="event-filter flex items-center hover:opacity-80 transition-opacity"
+                            data-type="all">
+                            <span class="w-4 h-4 rounded-full bg-gray-400 mr-2"></span>
+                            <span class="text-gray-700 dark:text-gray-300">All Events</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center">
+                        <button class="event-filter flex items-center hover:opacity-80 transition-opacity"
+                            data-type="sports">
+                            <span class="w-4 h-4 rounded-full bg-primary mr-2"></span>
+                            <span class="text-gray-700 dark:text-gray-300">Sports Events</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center">
+                        <button class="event-filter flex items-center hover:opacity-80 transition-opacity"
+                            data-type="performance">
+                            <span class="w-4 h-4 rounded-full bg-pink-500 mr-2"></span>
+                            <span class="text-gray-700 dark:text-gray-300">Performances</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center">
+                        <button class="event-filter flex items-center hover:opacity-80 transition-opacity"
+                            data-type="academic">
+                            <span class="w-4 h-4 rounded-full bg-purple-500 mr-2"></span>
+                            <span class="text-gray-700 dark:text-gray-300">Academic Events</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Details Modal -->
+        <div id="eventModal"
+            class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center backdrop-blur-sm transition-all duration-300">
+            <div
+                class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-2xl max-w-lg w-full mx-4 modal-animation">
+                <div class="relative">
+                    <div id="modalImageContainer"
+                        class="h-56 bg-gradient-to-r from-primary to-accent flex items-center justify-center">
+                        <div id="modalIcon" class="text-white w-16 h-16">
+                            <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <button id="closeModalBtn"
+                        class="absolute top-4 right-4 text-white hover:text-gray-200 p-1 transition-colors transform hover:rotate-90 duration-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl leading-6 font-bold text-gray-900 dark:text-white mb-4 animate__animated animate__fadeInUp"
+                        id="modalTitle"></h3>
+                    <div class="mt-4 space-y-4">
+                        <p class="flex items-center text-gray-600 dark:text-gray-300 animate__animated animate__fadeInUp animate__delay-1s"
+                            id="modalDate">
+                            <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span></span>
+                        </p>
+                        <p class="flex items-center text-gray-600 dark:text-gray-300 animate__animated animate__fadeInUp animate__delay-2s"
+                            id="modalTime">
+                            <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span></span>
+                        </p>
+                        <p class="flex items-center text-gray-600 dark:text-gray-300 animate__animated animate__fadeInUp animate__delay-3s"
+                            id="modalLocation">
+                            <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span></span>
+                        </p>
+                        <div
+                            class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mt-2 animate__animated animate__fadeIn animate__delay-4s">
+                            <p class="text-gray-700 dark:text-gray-300" id="modalDescription"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 flex justify-end">
+                    <a href="#" id="modalBookButton"
+                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all transform hover:scale-105">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                        </svg>
+                        Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Events Preview -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8" data-aos="fade-up">
+                Upcoming Events
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="upcomingEvents" data-aos="fade-up"
+                data-aos-delay="100">
+                <!-- Event items will be dynamically populated -->
+            </div>
+        </section>
+
+        <!-- Footer will be injected by shared-components.js -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- FullCalendar 5 bundle (includes core, daygrid and interaction) -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+    <script src="js/shared-components.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 50
+        });
+
+        // Initialize shared components
+        initSharedComponents();
+
+        // Event filtering functionality
+        let calendar; // Make calendar accessible globally
+        let activeFilter = 'all';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize calendar with filtering support
+            initializeCalendar();
+
+            // Setup event filters
+            setupEventFilters();
+
+            // Populate upcoming events
+            populateUpcomingEvents();
+        });
+
+        function initializeCalendar() {
+            // Show loading animation
+            const calendarContainer = document.getElementById('calendarContainer');
+            calendarContainer.classList.add('calendar-loading');
+
+            const calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek'
+                },
+                // Enhanced visuals
+                height: 'auto',
+                aspectRatio: 1.8,
+                dayMaxEvents: true,
+                firstDay: 1, // Start week on Monday
+                buttonText: {
+                    today: 'Today',
+                    month: 'Month',
+                    week: 'Week'
+                },
+                eventTimeFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: 'short'
+                },
+                events: [
+                    {
+                        id: '1',
+                        title: 'Basketball Championship',
+                        start: '2025-01-19T19:00:00',
+                        end: '2025-01-19T22:00:00',
+                        location: 'Main Court',
+                        description: 'Experience the thrill of championship basketball! Watch the city\'s best teams compete for the ultimate trophy in an electrifying atmosphere.',
+                        bookingLink: 'buy.html?event=basketball',
+                        color: '#1E3A8A', // Primary color for sports
+                        imageUrl: 'https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/rockcms/2024-05/240509-nba-game-ch-1311-f72588.jpg',
+                        eventType: 'sports'
+                    },
+                    {
+                        id: '2',
+                        title: 'Local Trade Show',
+                        start: '2025-01-21T10:00:00',
+                        end: '2025-01-21T18:00:00',
+                        location: 'Exhibition Hall',
+                        description: 'Connect with local businesses and entrepreneurs. Discover new products, services, and networking opportunities for your business.',
+                        bookingLink: 'buy.html?event=tradeshow',
+                        color: '#60A5FA', // Accent color for trade shows
+                        imageUrl: 'https://img.tradefest.io/filters:quality(80)/filters:format(.webp)/fit-in/1920x0/tradefest/static/tradeshow-illustration.jpeg',
+                        eventType: 'trade'
+                    },
+                    {
+                        id: '3',
+                        title: 'Science Competition',
+                        start: '2024-12-22T09:00:00',
+                        end: '2024-12-22T17:00:00',
+                        location: 'Conference Hall',
+                        description: 'Watch brilliant minds compete in scientific challenges. This event showcases innovation and problem-solving from students and professionals alike.',
+                        bookingLink: 'buy.html?event=science',
+                        color: '#10B981', // Green for science
+                        imageUrl: 'https://media.istockphoto.com/id/1457587318/photo/male-doctor-giving-lecture-or-presentation-at-medical-seminar.jpg',
+                        eventType: 'academic'
+                    },
+                    {
+                        id: '4',
+                        title: 'Rock Concert',
+                        start: '2025-01-25T20:00:00',
+                        end: '2025-01-25T23:30:00',
+                        location: 'Main Arena',
+                        description: 'Experience a night of electrifying performances from top rock bands. Featuring special lighting effects and state-of-the-art sound systems.',
+                        bookingLink: 'buy.html?event=concert',
+                        color: '#EC4899', // Pink for performances
+                        imageUrl: 'https://www.rollingstone.com/wp-content/uploads/2023/09/GettyImages-1605318140.jpg',
+                        eventType: 'performance'
+                    },
+                    {
+                        id: '5',
+                        title: 'Tech Conference',
+                        start: '2025-02-05',
+                        end: '2025-02-07',
+                        location: 'Conference Center',
+                        description: 'Join industry leaders and innovators for three days of cutting-edge technology discussions, workshops, and networking opportunities.',
+                        bookingLink: 'buy.html?event=techconf',
+                        color: '#8B5CF6', // Purple for tech
+                        imageUrl: 'https://www.simplilearn.com/ice9/free_resources_article_thumb/What_is_the_Importance_of_Technology.jpg',
+                        eventType: 'academic'
+                    }
+                ],
+                eventDidMount: function (info) {
+                    // Add tooltip
+                    const eventEl = info.el;
+                    const tooltipContent = info.event.title + ' - ' + info.event.extendedProps.location;
+
+                    eventEl.setAttribute('title', tooltipContent);
+
+                    // Add animation class
+                    setTimeout(() => {
+                        eventEl.classList.add('fc-event-animated');
+                    }, 100 * parseInt(info.event.id));
+
+                    // Handle filtering
+                    if (activeFilter !== 'all' && info.event.extendedProps.eventType !== activeFilter) {
+                        eventEl.style.display = 'none';
+                    }
+                },
+                eventClick: function (info) {
+                    const modal = document.getElementById('eventModal');
+                    const title = document.getElementById('modalTitle');
+                    const date = document.getElementById('modalDate').querySelector('span');
+                    const time = document.getElementById('modalTime').querySelector('span');
+                    const location = document.getElementById('modalLocation').querySelector('span');
+                    const description = document.getElementById('modalDescription');
+                    const bookButton = document.getElementById('modalBookButton');
+                    const modalImageContainer = document.getElementById('modalImageContainer');
+
+                    // Set event data
+                    title.textContent = info.event.title;
+                    date.textContent = info.event.start.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+                    // Format time with start and end if available
+                    let timeText = info.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    if (info.event.end) {
+                        timeText += ' - ' + info.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    }
+                    time.textContent = timeText;
+
+                    location.textContent = info.event.extendedProps.location;
+                    description.textContent = info.event.extendedProps.description;
+                    bookButton.href = info.event.extendedProps.bookingLink;
+
+                    // Set modal background image if available
+                    if (info.event.extendedProps.imageUrl) {
+                        modalImageContainer.style.backgroundImage = `url('${info.event.extendedProps.imageUrl}')`;
+                        modalImageContainer.style.backgroundSize = 'cover';
+                        modalImageContainer.style.backgroundPosition = 'center';
+                        modalImageContainer.innerHTML = ''; // Remove icon if we have an image
+                    } else {
+                        // Reset to default gradient if no image
+                        modalImageContainer.style.backgroundImage = 'linear-gradient(to right, var(--tw-gradient-stops))';
+                        modalImageContainer.innerHTML = `
+                            <div id="modalIcon" class="text-white w-16 h-16">
+                                <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                        `;
+                    }
+
+                    // Apply animation to modal
+                    modal.classList.remove('hidden');
+                    const modalContent = modal.querySelector('.modal-animation');
+                    modalContent.style.animation = 'none';
+                    setTimeout(() => {
+                        modalContent.style.animation = 'modalFadeIn 0.4s ease forwards';
+                    }, 10);
+                },
+                loading: function (isLoading) {
+                    if (!isLoading) {
+                        // Remove loading class when calendar is ready
+                        setTimeout(() => {
+                            calendarContainer.classList.remove('calendar-loading');
+                        }, 500);
+                    }
+                }
+            });
+
+            calendar.render();
+        }
+
+        function setupEventFilters() {
+            const filterButtons = document.querySelectorAll('.event-filter');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('font-bold', 'scale-110');
+                        btn.querySelector('span:first-child').classList.remove('ring-2', 'ring-offset-2', 'ring-primary');
+                    });
+
+                    // Add active class to clicked button with animation
+                    this.classList.add('font-bold', 'scale-110');
+                    this.classList.add('animate__animated', 'animate__pulse');
+                    this.querySelector('span:first-child').classList.add('ring-2', 'ring-offset-2', 'ring-primary');
+
+                    // Remove animation class after it completes
+                    setTimeout(() => {
+                        this.classList.remove('animate__animated', 'animate__pulse');
+                    }, 800);
+
+                    // Set active filter
+                    activeFilter = this.getAttribute('data-type');
+
+                    // Apply filter with animation
+                    applyFilter(activeFilter);
+                });
+            });
+
+            // Set "All" as default active filter
+            const allFilter = document.querySelector('.event-filter[data-type="all"]');
+            if (allFilter) {
+                allFilter.classList.add('font-bold', 'scale-110');
+                allFilter.querySelector('span:first-child').classList.add('ring-2', 'ring-offset-2', 'ring-primary');
+            }
+        }
+
+        function applyFilter(filterType) {
+            calendar.getEvents().forEach(event => {
+                const eventElement = calendar.getEventById(event.id).el;
+                if (!eventElement) return; // Skip if element not found
+
+                if (filterType === 'all') {
+                    eventElement.style.display = 'block';
+                } else if (event.extendedProps.eventType === filterType) {
+                    eventElement.style.display = 'block';
+                } else {
+                    eventElement.style.display = 'none';
+                }
+            });
+        }
+
+        // Populate upcoming events
+        function populateUpcomingEvents() {
+            const eventsContainer = document.getElementById('upcomingEvents');
+            if (!eventsContainer) return;
+
+            const events = [
+                {
+                    id: 1,
+                    title: 'Basketball Championship',
+                    date: 'January 19, 2025',
+                    time: '7:00 PM - 10:00 PM',
+                    location: 'Main Court',
+                    image: 'https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/rockcms/2024-05/240509-nba-game-ch-1311-f72588.jpg',
+                    link: 'buy.html?event=basketball',
+                    category: 'Sports',
+                    badge: 'Featured'
+                },
+                {
+                    id: 2,
+                    title: 'Local Trade Show',
+                    date: 'January 21, 2025',
+                    time: '10:00 AM - 6:00 PM',
+                    location: 'Exhibition Hall',
+                    image: 'https://img.tradefest.io/filters:quality(80)/filters:format(.webp)/fit-in/1920x0/tradefest/static/tradeshow-illustration.jpeg',
+                    link: 'buy.html?event=tradeshow',
+                    category: 'Business',
+                    badge: 'New'
+                },
+                {
+                    id: 3,
+                    title: 'Science Competition',
+                    date: 'December 22, 2024',
+                    time: '9:00 AM - 5:00 PM',
+                    location: 'Conference Hall',
+                    image: 'https://media.istockphoto.com/id/1457587318/photo/male-doctor-giving-lecture-or-presentation-at-medical-seminar.jpg',
+                    link: 'buy.html?event=science',
+                    category: 'Academic',
+                    badge: 'Popular'
+                },
+                {
+                    id: 4,
+                    title: 'Rock Concert',
+                    date: 'January 25, 2025',
+                    time: '8:00 PM - 11:30 PM',
+                    location: 'Main Arena',
+                    image: 'https://www.rollingstone.com/wp-content/uploads/2023/09/GettyImages-1605318140.jpg',
+                    link: 'buy.html?event=concert',
+                    category: 'Entertainment',
+                    badge: 'Selling Fast'
+                }
+            ];
+
+            // Clear existing content
+            eventsContainer.innerHTML = '';
+
+            events.forEach((event, index) => {
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-card bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300';
+                eventCard.setAttribute('data-aos', 'fade-up');
+                eventCard.setAttribute('data-aos-delay', (index * 100).toString());
+
+                eventCard.innerHTML = `
+                    <div class="relative">
+                        <img src="${event.image}" alt="${event.title}" class="w-full h-48 object-cover transition-transform duration-700 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-primary text-white rounded-lg px-3 py-1 text-sm font-semibold animate__animated animate__fadeInRight">
+                            ${event.badge}
+                        </div>
+                        <div class="absolute bottom-0 left-0 bg-gradient-to-t from-black/70 to-transparent w-full py-2 px-4">
+                            <span class="text-white text-sm font-medium">${event.category}</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">${event.title}</h3>
+                        <div class="space-y-3 mb-6">
+                            <p class="flex items-center text-gray-600 dark:text-gray-300 text-sm">
+                                <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                ${event.date}
+                            </p>
+                            <p class="flex items-center text-gray-600 dark:text-gray-300 text-sm">
+                                <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                ${event.time}
+                            </p>
+                            <p class="flex items-center text-gray-600 dark:text-gray-300 text-sm">
+                                <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                ${event.location}
+                            </p>
+                        </div>
+                        <a href="${event.link}" class="group block w-full text-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all duration-300 transform hover:translate-y-[-2px]">
+                            <span class="inline-flex items-center">
+                                Book Now
+                                <svg class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                `;
+                eventsContainer.appendChild(eventCard);
+            });
+        }
+
+        // Call the function when the document is loaded
+        document.addEventListener('DOMContentLoaded', populateUpcomingEvents);
+    </script>
+</body>
+
+</html>

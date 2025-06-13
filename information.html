@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information - Patriot Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E3A8A',
+                        secondary: '#111827',
+                        accent: '#60A5FA',
+                    },
+                    fontFamily: {
+                        'sans': ['Poppins', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .backdrop-blur {
+            backdrop-filter: blur(8px);
+        }
+
+        /* Text Primary Color - Accessible for both light and dark themes */
+        .text-primary {
+            --tw-text-opacity: 1 !important;
+            color: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+            /* #1E3A8A - blue-800 for light theme */
+        }
+
+        .dark .text-primary {
+            --tw-text-opacity: 1 !important;
+            color: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+            /* #93C5FD - blue-300 for dark theme */
+        }
+
+        /* Specific rules for SVG elements with text-primary class */
+        svg.text-primary {
+            --tw-text-opacity: 1 !important;
+            color: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+            stroke: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+            fill: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+        }
+
+        .dark svg.text-primary {
+            --tw-text-opacity: 1 !important;
+            color: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+            stroke: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+            fill: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+        }
+
+        /* For SVG elements inside elements with text-primary class */
+        .text-primary svg {
+            --tw-text-opacity: 1 !important;
+            color: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+            stroke: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+            fill: rgb(30 58 138 / var(--tw-text-opacity, 1)) !important;
+        }
+
+        .dark .text-primary svg {
+            --tw-text-opacity: 1 !important;
+            color: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+            stroke: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+            fill: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
+        }
+
+        /* Dark mode styles */
+        .dark body {
+            background-color: #111827;
+            color: #f3f4f6;
+        }
+
+        .dark .bg-white {
+            background-color: #1f2937;
+        }
+
+        .dark .text-gray-600 {
+            color: #d1d5db;
+        }
+
+        .dark .border-gray-200 {
+            border-color: #374151;
+        }
+
+        .dark .bg-gray-50 {
+            background-color: #1f2937;
+        }
+
+        /* Page transitions */
+        .page-transition {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900">
+
+    <div class="page-transition">
+        <!-- Header will be injected by shared-components.js -->
+
+        <!-- Hero Section -->
+        <section class="relative pt-32 pb-20">
+            <!-- Background Pattern -->
+            <div
+                class="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 dark:from-primary/10 dark:to-accent/10">
+                <div class="absolute inset-0 bg-grid-primary/[0.05] bg-[size:20px_20px]"></div>
+            </div>
+
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6"
+                        data-aos="fade-up">
+                        Arena Information
+                    </h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-10" data-aos="fade-up"
+                        data-aos-delay="100">
+                        Everything you need to know about Patriot Arena
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabs Navigation -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+            <div class="border-b border-gray-200 dark:border-gray-700">
+                <nav class="flex flex-wrap -mb-px" aria-label="Tabs">
+                    <button
+                        class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-primary text-primary"
+                        data-target="facility">
+                        Facility Information
+                    </button>
+                    <button
+                        class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 ml-8"
+                        data-target="rules">
+                        Rules & Guidelines
+                    </button>
+                    <button
+                        class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 ml-8"
+                        data-target="accessibility">
+                        Accessibility
+                    </button>
+                    <button
+                        class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 ml-8"
+                        data-target="faq">
+                        FAQs
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+            <!-- Facility Information Tab -->
+            <div id="facility" class="tab-content block">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div data-aos="fade-right">
+                        <img src="assets/information-stadium.png" alt="Patriot Arena Facility"
+                            class="rounded-xl shadow-xl w-full h-auto">
+                    </div>
+                    <div data-aos="fade-left">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">About Our Facility</h2>
+                        <div class="space-y-6 text-gray-600 dark:text-gray-300">
+                            <p>
+                                Patriot Arena is a state-of-the-art multipurpose venue designed to host a wide variety
+                                of events, from sporting competitions to concerts, trade shows, and community
+                                gatherings.
+                            </p>
+                            <p>
+                                Our facility features a 10,000-seat main arena, multiple conference rooms, exhibition
+                                halls, and modern amenities to ensure an exceptional experience for all guests.
+                            </p>
+
+                            <div class="mt-8 space-y-4">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Arena Features:</h3>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>10,000-seat main arena with state-of-the-art acoustics</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Multiple conference and meeting rooms</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>20,000 sq ft exhibition hall</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Full-service concessions and catering options</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Free parking for over 3,000 vehicles</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hours and Directions -->
+                <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8" data-aos="fade-up">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Hours of Operation</h3>
+                        <div class="space-y-4 text-gray-600 dark:text-gray-300">
+                            <p class="flex justify-between">
+                                <span class="font-medium">Monday - Friday:</span>
+                                <span>9:00 AM - 10:00 PM</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="font-medium">Saturday:</span>
+                                <span>8:00 AM - 11:00 PM</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="font-medium">Sunday:</span>
+                                <span>10:00 AM - 8:00 PM</span>
+                            </p>
+                            <p class="mt-4 text-sm italic">
+                                *Hours may vary during special events. Please check the event details for specific
+                                times.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8" data-aos="fade-up"
+                        data-aos-delay="100">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Directions</h3>
+                        <div class="space-y-4 text-gray-600 dark:text-gray-300">
+                            <p>
+                                Patriot Arena is conveniently located in the heart of the city, easily accessible by car
+                                and public transportation.
+                            </p>
+                            <p class="flex items-center">
+                                <svg class="w-5 h-5 text-primary mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <span>123 Stadium Way, Cityville, ST 12345</span>
+                            </p>
+                            <div class="mt-4">
+                                <a href="interactive-map.html"
+                                    class="inline-flex items-center text-primary hover:text-primary/80 transition-colors">
+                                    <span class="font-medium">View Interactive Map</span>
+                                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rules & Guidelines Tab -->
+            <div id="rules" class="tab-content hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8" data-aos="fade-up">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Arena Rules & Guidelines</h2>
+
+                    <div class="space-y-8 text-gray-600 dark:text-gray-300">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">General Rules</h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>All guests must have a valid ticket for entry</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>No outside food or beverages allowed</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Smoking is prohibited in all indoor areas</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Weapons of any kind are strictly prohibited</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Prohibited Items</h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-red-500 mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Weapons, firearms, knives, or items that may be used as weapons</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-red-500 mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Outside food and beverages</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-red-500 mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Illegal substances</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-red-500 mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Professional cameras or recording equipment (without proper
+                                        credentials)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accessibility Tab -->
+            <div id="accessibility" class="tab-content hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8" data-aos="fade-up">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Accessibility Services</h2>
+
+                    <div class="space-y-8 text-gray-600 dark:text-gray-300">
+                        <p>
+                            Patriot Arena is committed to providing an accessible environment for all guests. We offer a
+                            variety of services to ensure everyone can enjoy our events.
+                        </p>
+
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Accessible Seating</h3>
+                            <p>
+                                Accessible seating is available in all sections of the arena. Companions may sit with
+                                guests who require accessible seating. To purchase accessible seating tickets, please
+                                contact our box office at (555) 123-4567.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Parking</h3>
+                            <p>
+                                Accessible parking spaces are available in all parking lots. These spaces are located
+                                close to the entrances and are clearly marked. A valid accessible parking permit must be
+                                displayed.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Additional Services
+                            </h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Assistive listening devices</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Sign language interpretation (with advance notice)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Service animals are welcome</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Contact for
+                                Accessibility Needs</h3>
+                            <p>
+                                If you have specific accessibility requirements or questions, please contact our Guest
+                                Services team at (555) 123-4567 or email <a href="mailto:accessibility@patriotarena.com"
+                                    class="text-primary hover:text-primary/80 transition-colors">accessibility@patriotarena.com</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQs Tab -->
+            <div id="faq" class="tab-content hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8" data-aos="fade-up">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Frequently Asked Questions</h2>
+
+                    <div class="space-y-6 text-gray-600 dark:text-gray-300">
+                        <!-- FAQ Item -->
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                            <button class="faq-toggle w-full flex justify-between items-center py-3 text-left">
+                                <span class="text-lg font-medium text-gray-900 dark:text-white">What are the arena's
+                                    operating hours?</span>
+                                <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transform transition-transform" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-content hidden pt-3">
+                                <p>Our standard hours are Monday to Friday, 9:00 AM - 10:00 PM; Saturday, 8:00 AM -
+                                    11:00 PM; and Sunday, 10:00 AM - 8:00 PM. These hours may vary during special
+                                    events, so please check event details for specific times.</p>
+                            </div>
+                        </div>
+
+                        <!-- More FAQ Items -->
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                            <button class="faq-toggle w-full flex justify-between items-center py-3 text-left">
+                                <span class="text-lg font-medium text-gray-900 dark:text-white">Is there parking
+                                    available at the arena?</span>
+                                <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transform transition-transform" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-content hidden pt-3">
+                                <p>Yes, we offer free parking for over 3,000 vehicles. Accessible parking spaces are
+                                    available in all lots close to the entrances.</p>
+                            </div>
+                        </div>
+
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                            <button class="faq-toggle w-full flex justify-between items-center py-3 text-left">
+                                <span class="text-lg font-medium text-gray-900 dark:text-white">Can I bring outside food
+                                    and beverages?</span>
+                                <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transform transition-transform" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-content hidden pt-3">
+                                <p>Outside food and beverages are not allowed in the arena. We offer a variety of
+                                    concession options, including vegetarian, vegan, and gluten-free choices.</p>
+                            </div>
+                        </div>
+
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                            <button class="faq-toggle w-full flex justify-between items-center py-3 text-left">
+                                <span class="text-lg font-medium text-gray-900 dark:text-white">How can I book the arena
+                                    for an event?</span>
+                                <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transform transition-transform" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-content hidden pt-3">
+                                <p>To book the arena for your event, please visit our <a href="planner.html"
+                                        class="text-primary hover:text-primary/80 transition-colors">Event Planner</a>
+                                    page or contact our events team at (555) 123-4567.</p>
+                            </div>
+                        </div>
+
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                            <button class="faq-toggle w-full flex justify-between items-center py-3 text-left">
+                                <span class="text-lg font-medium text-gray-900 dark:text-white">Are there accommodations
+                                    nearby?</span>
+                                <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transform transition-transform" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="faq-content hidden pt-3">
+                                <p>Yes, there are several hotels within a 5-mile radius of Patriot Arena. We have
+                                    partnerships with several local hotels that offer discounted rates for event
+                                    attendees.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/shared-components.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Initialize shared components
+        document.addEventListener('DOMContentLoaded', function () {
+            initSharedComponents();
+
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Deactivate all tabs
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active', 'border-primary', 'text-primary');
+                        btn.classList.add('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+                    });
+
+                    // Activate clicked tab
+                    button.classList.add('active', 'border-primary', 'text-primary');
+                    button.classList.remove('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+
+                    // Hide all tab content
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                        content.classList.remove('block');
+                    });
+
+                    // Show corresponding content
+                    const target = button.dataset.target;
+                    document.getElementById(target).classList.remove('hidden');
+                    document.getElementById(target).classList.add('block');
+                });
+            });
+
+            // FAQ accordion functionality
+            const faqToggles = document.querySelectorAll('.faq-toggle');
+
+            faqToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const content = toggle.nextElementSibling;
+                    const icon = toggle.querySelector('svg');
+
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
