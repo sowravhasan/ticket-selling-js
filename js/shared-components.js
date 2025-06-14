@@ -23,9 +23,7 @@ function addHeader() {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </button>
-                    </div>
-
-                    <!-- Desktop menu -->
+                    </div>                    <!-- Desktop menu -->
                     <div class="hidden lg:flex lg:items-center lg:space-x-8">
                         <a href="index.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Home</a>
                         <a href="box-office.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Box Office</a>
@@ -33,6 +31,15 @@ function addHeader() {
                         <a href="information.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Information</a>
                         <a href="calendar.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Calendar</a>
                         <a href="interactive-map.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Seating Map</a>
+                        <!-- Theme Toggle Button -->
+                        <button id="nav-theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300">
+                            <svg class="w-5 h-5 text-gray-700 dark:text-gray-200 dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                            </svg>
+                            <svg class="w-5 h-5 text-gray-200 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
                         <a href="contact-us.html" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 transition-colors">
                             Contact Us
                         </a>
@@ -154,28 +161,21 @@ function addBackToTop() {
   });
 }
 
-// Add Dark Mode Toggle
+// Add Dark Mode Toggle functionality to navigation
 function addDarkModeToggle() {
-  const button = document.createElement("button");
-  button.innerHTML = `
-        <svg class="w-6 h-6 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-        </svg>
-        <svg class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-        </svg>
-    `;
-  button.className =
-    "fixed top-28 right-8 bg-white dark:bg-gray-800 text-primary dark:text-yellow-400 p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary z-40 hover:scale-105";
-  button.id = "dark-mode-toggle";
-
-  button.addEventListener("click", () => {
-    document.documentElement.classList.toggle("dark");
-    localStorage.setItem(
-      "darkMode",
-      document.documentElement.classList.contains("dark")
-    );
-  });
+  // Wait for the header to be added before adding event listener
+  setTimeout(() => {
+    const button = document.getElementById("nav-theme-toggle");
+    if (button) {
+      button.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+        localStorage.setItem(
+          "darkMode",
+          document.documentElement.classList.contains("dark")
+        );
+      });
+    }
+  }, 100);
 
   // Check for saved dark mode preference
   if (
@@ -185,14 +185,29 @@ function addDarkModeToggle() {
   ) {
     document.documentElement.classList.add("dark");
   }
-
-  document.body.appendChild(button);
 }
 
 // Add global dark mode text fixes
 function addGlobalDarkModeStyles() {
-  const style = document.createElement('style');
+  const style = document.createElement("style");
   style.textContent = `
+    /* Navigation link styles for consistent spacing */
+    .nav-link {
+      position: relative;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .dark .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
     /* Global dark mode text visibility fixes */
     .dark .text-gray-500 {
       color: #9CA3AF !important;
