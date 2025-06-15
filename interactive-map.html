@@ -34,6 +34,36 @@
             scroll-behavior: smooth;
         }
 
+        /* Mobile responsive fixes for Landbot widget */
+        @media (max-width: 768px) {
+            #landbot-container {
+                max-height: 70vh !important;
+                max-width: 90vw !important;
+                bottom: 80px !important;
+                right: 10px !important;
+                left: auto !important;
+                z-index: 40 !important;
+            }
+
+            #landbot-launcher-button {
+                bottom: 20px !important;
+                right: 16px !important;
+                z-index: 39 !important;
+                transform: scale(0.85) !important;
+            }
+
+            /* Fix for interactive map - ensure chatbot doesn't block interactions */
+            #map-container,
+            .arena-svg {
+                z-index: 1 !important;
+            }
+
+            /* Ensure the chatbot doesn't interfere with navigation */
+            .mobile-menu-button {
+                z-index: 50 !important;
+            }
+        }
+
         .backdrop-blur {
             backdrop-filter: blur(8px);
         }
@@ -153,6 +183,23 @@
 
         .arena-svg {
             pointer-events: all;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Improved Mobile Responsiveness for Arena SVG */
+        @media (max-width: 768px) {
+            .arena-svg {
+                max-width: 100%;
+                transform-origin: center;
+                /* Increase touch target size on mobile */
+                transform: scale(1.05);
+            }
+
+            svg .stage-section {
+                /* Increase touch target size */
+                stroke-width: 2px;
+            }
         }
 
         @keyframes pulse-glow {
@@ -395,14 +442,14 @@
                 <div class="lg:col-span-2">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 seat-info-panel"
                         data-aos="fade-right">
-                        <div class="flex items-center justify-between mb-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
                             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Arena Layout</h2>
-                            <div class="flex items-center space-x-4">
+                            <div class="flex flex-wrap items-center gap-3">
                                 <button onclick="resetView()"
                                     class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
                                     Reset View
                                 </button>
-                                <div class="text-sm text-gray-600 dark:text-gray-400">
+                                <div class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
                                     Click sections to select
                                 </div>
                             </div>
@@ -410,7 +457,7 @@
 
                         <!-- Enhanced Stadium SVG -->
                         <div
-                            class="bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg p-8 relative overflow-hidden">
+                            class="bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg p-4 md:p-8 relative overflow-hidden">
                             <!-- Background pattern -->
                             <div class="absolute inset-0 opacity-10">
                                 <div
@@ -418,467 +465,487 @@
                                 </div>
                             </div>
 
-                            <svg viewBox="0 0 800 600" class="w-full h-auto max-h-[500px] arena-svg"
-                                style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">
+                            <div class="overflow-auto max-w-full touch-pan-x touch-pan-y" id="map-container">
+                                <svg viewBox="0 0 800 600" class="w-full h-auto max-h-[500px] arena-svg"
+                                    style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">
 
-                                <!-- Enhanced Gradient definitions -->
-                                <defs>
-                                    <linearGradient id="stageGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#1E3A8A;stop-opacity:1" />
-                                        <stop offset="50%" style="stop-color:#3B82F6;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
-                                    </linearGradient>
-                                    <linearGradient id="vipGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#FEF3C7;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#FCD34D;stop-opacity:1" />
-                                    </linearGradient>
-                                    <linearGradient id="premiumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#D1FAE5;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#34D399;stop-opacity:1" />
-                                    </linearGradient>
-                                    <linearGradient id="standardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#DBEAFE;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
-                                    </linearGradient>
-                                    <filter id="glow">
-                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                                        <feMerge>
-                                            <feMergeNode in="coloredBlur" />
-                                            <feMergeNode in="SourceGraphic" />
-                                        </feMerge>
-                                    </filter>
-                                </defs>
+                                    <!-- Enhanced Gradient definitions -->
+                                    <defs>
+                                        <linearGradient id="stageGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#1E3A8A;stop-opacity:1" />
+                                            <stop offset="50%" style="stop-color:#3B82F6;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
+                                        </linearGradient>
+                                        <linearGradient id="vipGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#FEF3C7;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#FCD34D;stop-opacity:1" />
+                                        </linearGradient>
+                                        <linearGradient id="premiumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#D1FAE5;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#34D399;stop-opacity:1" />
+                                        </linearGradient>
+                                        <linearGradient id="standardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#DBEAFE;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
+                                        </linearGradient>
+                                        <filter id="glow">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                                            <feMerge>
+                                                <feMergeNode in="coloredBlur" />
+                                                <feMergeNode in="SourceGraphic" />
+                                            </feMerge>
+                                        </filter>
+                                    </defs>
 
-                                <!-- Arena Background (Outer Border) -->
-                                <ellipse cx="400" cy="300" rx="380" ry="280" fill="#F8FAFC" stroke="#E5E7EB"
-                                    stroke-width="2" class="arena-svg" />
+                                    <!-- Arena Background (Outer Border) -->
+                                    <ellipse cx="400" cy="300" rx="380" ry="280" fill="#F8FAFC" stroke="#E5E7EB"
+                                        stroke-width="2" class="arena-svg" />
 
-                                <!-- Main Arena Seating Area - Blue sections exactly like the image -->
-                                <ellipse cx="400" cy="300" rx="350" ry="250" fill="#3B82F6" stroke="#1E3A8A"
-                                    stroke-width="2" opacity="0.9" />
+                                    <!-- Main Arena Seating Area - Blue sections exactly like the image -->
+                                    <ellipse cx="400" cy="300" rx="350" ry="250" fill="#3B82F6" stroke="#1E3A8A"
+                                        stroke-width="2" opacity="0.9" />
 
-                                <!-- Radial dividers for sections - similar to image -->
-                                <!-- Vertical dividers -->
-                                <line x1="400" y1="50" x2="400" y2="550" stroke="white" stroke-width="1.5" />
+                                    <!-- Radial dividers for sections - similar to image -->
+                                    <!-- Vertical dividers -->
+                                    <line x1="400" y1="50" x2="400" y2="550" stroke="white" stroke-width="1.5" />
 
-                                <!-- Horizontal dividers -->
-                                <line x1="50" y1="300" x2="750" y2="300" stroke="white" stroke-width="1.5" />
+                                    <!-- Horizontal dividers -->
+                                    <line x1="50" y1="300" x2="750" y2="300" stroke="white" stroke-width="1.5" />
 
-                                <!-- Diagonal dividers - similar to ticketmaster image -->
-                                <line x1="145" y1="125" x2="655" y2="475" stroke="white" stroke-width="1.5" />
-                                <line x1="145" y1="475" x2="655" y2="125" stroke="white" stroke-width="1.5" />
-                                <line x1="220" y1="100" x2="580" y2="500" stroke="white" stroke-width="1.5" />
-                                <line x1="220" y1="500" x2="580" y2="100" stroke="white" stroke-width="1.5" />
+                                    <!-- Diagonal dividers - similar to ticketmaster image -->
+                                    <line x1="145" y1="125" x2="655" y2="475" stroke="white" stroke-width="1.5" />
+                                    <line x1="145" y1="475" x2="655" y2="125" stroke="white" stroke-width="1.5" />
+                                    <line x1="220" y1="100" x2="580" y2="500" stroke="white" stroke-width="1.5" />
+                                    <line x1="220" y1="500" x2="580" y2="100" stroke="white" stroke-width="1.5" />
 
-                                <!-- Circular rings dividing different price tiers -->
-                                <ellipse cx="400" cy="300" rx="250" ry="170" fill="none" stroke="white"
-                                    stroke-width="1.5" />
-                                <ellipse cx="400" cy="300" rx="150" ry="110" fill="none" stroke="white"
-                                    stroke-width="1.5" />
+                                    <!-- Circular rings dividing different price tiers -->
+                                    <ellipse cx="400" cy="300" rx="250" ry="170" fill="none" stroke="white"
+                                        stroke-width="1.5" />
+                                    <ellipse cx="400" cy="300" rx="150" ry="110" fill="none" stroke="white"
+                                        stroke-width="1.5" />
 
-                                <!-- Inner Arena Floor - White area -->
-                                <ellipse cx="400" cy="300" rx="120" ry="80" fill="white" stroke="#D1D5DB"
-                                    stroke-width="1" />
+                                    <!-- Inner Arena Floor - White area -->
+                                    <ellipse cx="400" cy="300" rx="120" ry="80" fill="white" stroke="#D1D5DB"
+                                        stroke-width="1" />
 
-                                <!-- Center Text - Title -->
-                                <text x="400" y="280" text-anchor="middle" font-size="24" font-weight="bold"
-                                    fill="#1E3A8A">
-                                    Patriot Arena
-                                </text>
-                                <text x="400" y="320" text-anchor="middle" font-size="20" font-weight="bold"
-                                    fill="#1E3A8A">
-                                    Seating Chart
-                                </text>
+                                    <!-- Center Text - Title -->
+                                    <text x="400" y="280" text-anchor="middle" font-size="24" font-weight="bold"
+                                        fill="#1E3A8A">
+                                        Patriot Arena
+                                    </text>
+                                    <text x="400" y="320" text-anchor="middle" font-size="20" font-weight="bold"
+                                        fill="#1E3A8A">
+                                        Seating Chart
+                                    </text>
 
-                                <!-- Section Numbers - Top Row -->
-                                <g class="section-label" data-section="208">
-                                    <text x="280" y="100" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">208</text>
-                                </g>
-                                <g class="section-label" data-section="209">
-                                    <text x="320" y="90" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">209</text>
-                                </g>
-                                <g class="section-label" data-section="210">
-                                    <text x="360" y="85" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">210</text>
-                                </g>
-                                <g class="section-label" data-section="211">
-                                    <text x="400" y="80" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">211</text>
-                                </g>
-                                <g class="section-label" data-section="212">
-                                    <text x="440" y="85" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">212</text>
-                                </g>
-                                <g class="section-label" data-section="213">
-                                    <text x="480" y="90" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">213</text>
-                                </g>
-                                <g class="section-label" data-section="214">
-                                    <text x="520" y="100" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">214</text>
-                                </g>
+                                    <!-- Section Numbers - Top Row -->
+                                    <g class="section-label" data-section="208">
+                                        <text x="280" y="100" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">208</text>
+                                    </g>
+                                    <g class="section-label" data-section="209">
+                                        <text x="320" y="90" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">209</text>
+                                    </g>
+                                    <g class="section-label" data-section="210">
+                                        <text x="360" y="85" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">210</text>
+                                    </g>
+                                    <g class="section-label" data-section="211">
+                                        <text x="400" y="80" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">211</text>
+                                    </g>
+                                    <g class="section-label" data-section="212">
+                                        <text x="440" y="85" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">212</text>
+                                    </g>
+                                    <g class="section-label" data-section="213">
+                                        <text x="480" y="90" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">213</text>
+                                    </g>
+                                    <g class="section-label" data-section="214">
+                                        <text x="520" y="100" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">214</text>
+                                    </g>
 
-                                <!-- Corner Sections -->
-                                <g class="section-label" data-section="207">
-                                    <text x="240" y="125" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">207</text>
-                                </g>
-                                <g class="section-label" data-section="215">
-                                    <text x="560" y="125" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">215</text>
-                                </g>
+                                    <!-- Corner Sections -->
+                                    <g class="section-label" data-section="207">
+                                        <text x="240" y="125" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">207</text>
+                                    </g>
+                                    <g class="section-label" data-section="215">
+                                        <text x="560" y="125" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">215</text>
+                                    </g>
 
-                                <!-- Side Sections -->
-                                <g class="section-label" data-section="206">
-                                    <text x="210" y="160" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">206</text>
-                                </g>
-                                <g class="section-label" data-section="205">
-                                    <text x="190" y="200" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">205</text>
-                                </g>
-                                <g class="section-label" data-section="204">
-                                    <text x="170" y="240" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">204</text>
-                                </g>
-                                <g class="section-label" data-section="203">
-                                    <text x="160" y="280" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">203</text>
-                                </g>
-                                <g class="section-label" data-section="202">
-                                    <text x="160" y="320" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">202</text>
-                                </g>
-                                <g class="section-label" data-section="201">
-                                    <text x="170" y="360" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">201</text>
-                                </g>
+                                    <!-- Side Sections -->
+                                    <g class="section-label" data-section="206">
+                                        <text x="210" y="160" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">206</text>
+                                    </g>
+                                    <g class="section-label" data-section="205">
+                                        <text x="190" y="200" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">205</text>
+                                    </g>
+                                    <g class="section-label" data-section="204">
+                                        <text x="170" y="240" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">204</text>
+                                    </g>
+                                    <g class="section-label" data-section="203">
+                                        <text x="160" y="280" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">203</text>
+                                    </g>
+                                    <g class="section-label" data-section="202">
+                                        <text x="160" y="320" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">202</text>
+                                    </g>
+                                    <g class="section-label" data-section="201">
+                                        <text x="170" y="360" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">201</text>
+                                    </g>
 
-                                <g class="section-label" data-section="216">
-                                    <text x="590" y="160" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">216</text>
-                                </g>
-                                <g class="section-label" data-section="217">
-                                    <text x="610" y="200" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">217</text>
-                                </g>
-                                <g class="section-label" data-section="218">
-                                    <text x="630" y="240" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">218</text>
-                                </g>
-                                <g class="section-label" data-section="219">
-                                    <text x="640" y="280" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">219</text>
-                                </g>
-                                <g class="section-label" data-section="220">
-                                    <text x="640" y="320" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">220</text>
-                                </g>
-                                <g class="section-label" data-section="221">
-                                    <text x="630" y="360" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">221</text>
-                                </g>
+                                    <g class="section-label" data-section="216">
+                                        <text x="590" y="160" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">216</text>
+                                    </g>
+                                    <g class="section-label" data-section="217">
+                                        <text x="610" y="200" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">217</text>
+                                    </g>
+                                    <g class="section-label" data-section="218">
+                                        <text x="630" y="240" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">218</text>
+                                    </g>
+                                    <g class="section-label" data-section="219">
+                                        <text x="640" y="280" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">219</text>
+                                    </g>
+                                    <g class="section-label" data-section="220">
+                                        <text x="640" y="320" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">220</text>
+                                    </g>
+                                    <g class="section-label" data-section="221">
+                                        <text x="630" y="360" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">221</text>
+                                    </g>
 
-                                <!-- Bottom Sections -->
-                                <g class="section-label" data-section="129">
-                                    <text x="190" y="400" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">129</text>
-                                </g>
-                                <g class="section-label" data-section="128">
-                                    <text x="230" y="430" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">128</text>
-                                </g>
-                                <g class="section-label" data-section="127">
-                                    <text x="270" y="450" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">127</text>
-                                </g>
-                                <g class="section-label" data-section="126">
-                                    <text x="310" y="465" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">126</text>
-                                </g>
-                                <g class="section-label" data-section="125">
-                                    <text x="350" y="470" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">125</text>
-                                </g>
-                                <g class="section-label" data-section="124">
-                                    <text x="400" y="475" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">124</text>
-                                </g>
-                                <g class="section-label" data-section="123">
-                                    <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">123</text>
-                                </g>
-                                <g class="section-label" data-section="122">
-                                    <text x="490" y="465" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">122</text>
-                                </g>
-                                <g class="section-label" data-section="121">
-                                    <text x="530" y="450" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">121</text>
-                                </g>
-                                <g class="section-label" data-section="120">
-                                    <text x="570" y="430" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">120</text>
-                                </g>
-                                <g class="section-label" data-section="119">
-                                    <text x="600" y="400" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">119</text>
-                                </g>
+                                    <!-- Bottom Sections -->
+                                    <g class="section-label" data-section="129">
+                                        <text x="190" y="400" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">129</text>
+                                    </g>
+                                    <g class="section-label" data-section="128">
+                                        <text x="230" y="430" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">128</text>
+                                    </g>
+                                    <g class="section-label" data-section="127">
+                                        <text x="270" y="450" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">127</text>
+                                    </g>
+                                    <g class="section-label" data-section="126">
+                                        <text x="310" y="465" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">126</text>
+                                    </g>
+                                    <g class="section-label" data-section="125">
+                                        <text x="350" y="470" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">125</text>
+                                    </g>
+                                    <g class="section-label" data-section="124">
+                                        <text x="400" y="475" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">124</text>
+                                    </g>
+                                    <g class="section-label" data-section="123">
+                                        <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">123</text>
+                                    </g>
+                                    <g class="section-label" data-section="122">
+                                        <text x="490" y="465" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">122</text>
+                                    </g>
+                                    <g class="section-label" data-section="121">
+                                        <text x="530" y="450" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">121</text>
+                                    </g>
+                                    <g class="section-label" data-section="120">
+                                        <text x="570" y="430" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">120</text>
+                                    </g>
+                                    <g class="section-label" data-section="119">
+                                        <text x="600" y="400" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">119</text>
+                                    </g>
 
-                                <!-- Lower Bowl Sections (100 level) -->
-                                <g class="section-label" data-section="101">
-                                    <text x="350" y="190" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">101</text>
-                                </g>
-                                <g class="section-label" data-section="102">
-                                    <text x="400" y="180" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">102</text>
-                                </g>
-                                <g class="section-label" data-section="103">
-                                    <text x="450" y="190" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">103</text>
-                                </g>
-                                <g class="section-label" data-section="104">
-                                    <text x="480" y="210" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">104</text>
-                                </g>
-                                <g class="section-label" data-section="105">
-                                    <text x="510" y="240" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">105</text>
-                                </g>
-                                <g class="section-label" data-section="106">
-                                    <text x="525" y="280" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">106</text>
-                                </g>
-                                <g class="section-label" data-section="107">
-                                    <text x="525" y="320" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">107</text>
-                                </g>
-                                <g class="section-label" data-section="108">
-                                    <text x="510" y="360" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">108</text>
-                                </g>
-                                <g class="section-label" data-section="109">
-                                    <text x="480" y="390" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">109</text>
-                                </g>
-                                <g class="section-label" data-section="110">
-                                    <text x="450" y="410" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">110</text>
-                                </g>
-                                <g class="section-label" data-section="111">
-                                    <text x="400" y="420" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">111</text>
-                                </g>
-                                <g class="section-label" data-section="112">
-                                    <text x="350" y="410" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">112</text>
-                                </g>
-                                <g class="section-label" data-section="113">
-                                    <text x="320" y="390" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">113</text>
-                                </g>
-                                <g class="section-label" data-section="114">
-                                    <text x="290" y="360" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">114</text>
-                                </g>
-                                <g class="section-label" data-section="115">
-                                    <text x="275" y="320" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">115</text>
-                                </g>
-                                <g class="section-label" data-section="116">
-                                    <text x="275" y="280" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">116</text>
-                                </g>
-                                <g class="section-label" data-section="117">
-                                    <text x="290" y="240" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">117</text>
-                                </g>
-                                <g class="section-label" data-section="118">
-                                    <text x="320" y="210" text-anchor="middle" font-size="12" font-weight="bold"
-                                        fill="white">118</text>
-                                </g>
+                                    <!-- Lower Bowl Sections (100 level) -->
+                                    <g class="section-label" data-section="101">
+                                        <text x="350" y="190" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">101</text>
+                                    </g>
+                                    <g class="section-label" data-section="102">
+                                        <text x="400" y="180" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">102</text>
+                                    </g>
+                                    <g class="section-label" data-section="103">
+                                        <text x="450" y="190" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">103</text>
+                                    </g>
+                                    <g class="section-label" data-section="104">
+                                        <text x="480" y="210" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">104</text>
+                                    </g>
+                                    <g class="section-label" data-section="105">
+                                        <text x="510" y="240" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">105</text>
+                                    </g>
+                                    <g class="section-label" data-section="106">
+                                        <text x="525" y="280" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">106</text>
+                                    </g>
+                                    <g class="section-label" data-section="107">
+                                        <text x="525" y="320" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">107</text>
+                                    </g>
+                                    <g class="section-label" data-section="108">
+                                        <text x="510" y="360" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">108</text>
+                                    </g>
+                                    <g class="section-label" data-section="109">
+                                        <text x="480" y="390" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">109</text>
+                                    </g>
+                                    <g class="section-label" data-section="110">
+                                        <text x="450" y="410" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">110</text>
+                                    </g>
+                                    <g class="section-label" data-section="111">
+                                        <text x="400" y="420" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">111</text>
+                                    </g>
+                                    <g class="section-label" data-section="112">
+                                        <text x="350" y="410" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">112</text>
+                                    </g>
+                                    <g class="section-label" data-section="113">
+                                        <text x="320" y="390" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">113</text>
+                                    </g>
+                                    <g class="section-label" data-section="114">
+                                        <text x="290" y="360" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">114</text>
+                                    </g>
+                                    <g class="section-label" data-section="115">
+                                        <text x="275" y="320" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">115</text>
+                                    </g>
+                                    <g class="section-label" data-section="116">
+                                        <text x="275" y="280" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">116</text>
+                                    </g>
+                                    <g class="section-label" data-section="117">
+                                        <text x="290" y="240" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">117</text>
+                                    </g>
+                                    <g class="section-label" data-section="118">
+                                        <text x="320" y="210" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="white">118</text>
+                                    </g>
 
-                                <!-- Press Box -->
-                                <rect x="350" y="70" width="100" height="20" rx="5" fill="#D1D5DB" stroke="#6B7280"
-                                    stroke-width="1" />
-                                <text x="400" y="85" text-anchor="middle" font-size="10" font-weight="medium"
-                                    fill="#374151">PRESS BOX</text>
-                                <text x="400" y="305" text-anchor="middle" fill="white" font-weight="bold"
-                                    font-size="24">STAGE</text>
+                                    <!-- Press Box -->
+                                    <rect x="350" y="70" width="100" height="20" rx="5" fill="#D1D5DB" stroke="#6B7280"
+                                        stroke-width="1" />
+                                    <text x="400" y="85" text-anchor="middle" font-size="10" font-weight="medium"
+                                        fill="#374151">PRESS BOX</text>
+                                    <text x="400" y="305" text-anchor="middle" fill="white" font-weight="bold"
+                                        font-size="24">STAGE</text>
 
-                                <!-- VIP SECTIONS (Close to Stage) -->
-                                <g class="stage-section" data-section="VIP-1" data-price="750" data-available="24"
-                                    data-level="VIP">
-                                    <rect x="150" y="250" width="120" height="70" rx="12" fill="url(#vipGradient)"
-                                        stroke="#F59E0B" stroke-width="3" />
-                                    <text x="210" y="285" text-anchor="middle" fill="#92400E" font-weight="bold"
-                                        font-size="18">VIP 1</text>
-                                    <text x="210" y="305" text-anchor="middle" fill="#92400E" font-size="14">$750</text>
-                                    <circle cx="180" cy="265" r="8" fill="#F59E0B" />
-                                    <text x="180" y="270" text-anchor="middle" fill="white" font-size="10">★</text>
-                                </g>
+                                    <!-- VIP SECTIONS (Close to Stage) -->
+                                    <g class="stage-section" data-section="VIP-1" data-price="750" data-available="24"
+                                        data-level="VIP">
+                                        <rect x="150" y="250" width="120" height="70" rx="12" fill="url(#vipGradient)"
+                                            stroke="#F59E0B" stroke-width="3" />
+                                        <text x="210" y="285" text-anchor="middle" fill="#92400E" font-weight="bold"
+                                            font-size="18">VIP 1</text>
+                                        <text x="210" y="305" text-anchor="middle" fill="#92400E"
+                                            font-size="14">$750</text>
+                                        <circle cx="180" cy="265" r="8" fill="#F59E0B" />
+                                        <text x="180" y="270" text-anchor="middle" fill="white" font-size="10">★</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="VIP-2" data-price="750" data-available="24"
-                                    data-level="VIP">
-                                    <rect x="530" y="250" width="120" height="70" rx="12" fill="url(#vipGradient)"
-                                        stroke="#F59E0B" stroke-width="3" />
-                                    <text x="590" y="285" text-anchor="middle" fill="#92400E" font-weight="bold"
-                                        font-size="18">VIP 2</text>
-                                    <text x="590" y="305" text-anchor="middle" fill="#92400E" font-size="14">$750</text>
-                                    <circle cx="620" cy="265" r="8" fill="#F59E0B" />
-                                    <text x="620" y="270" text-anchor="middle" fill="white" font-size="10">★</text>
-                                </g>
+                                    <g class="stage-section" data-section="VIP-2" data-price="750" data-available="24"
+                                        data-level="VIP">
+                                        <rect x="530" y="250" width="120" height="70" rx="12" fill="url(#vipGradient)"
+                                            stroke="#F59E0B" stroke-width="3" />
+                                        <text x="590" y="285" text-anchor="middle" fill="#92400E" font-weight="bold"
+                                            font-size="18">VIP 2</text>
+                                        <text x="590" y="305" text-anchor="middle" fill="#92400E"
+                                            font-size="14">$750</text>
+                                        <circle cx="620" cy="265" r="8" fill="#F59E0B" />
+                                        <text x="620" y="270" text-anchor="middle" fill="white" font-size="10">★</text>
+                                    </g>
 
-                                <!-- PREMIUM SECTIONS (Mid-range) -->
-                                <g class="stage-section" data-section="PREM-1" data-price="450" data-available="40"
-                                    data-level="Premium">
-                                    <rect x="100" y="150" width="100" height="80" rx="10" fill="url(#premiumGradient)"
-                                        stroke="#10B981" stroke-width="2" />
-                                    <text x="150" y="185" text-anchor="middle" fill="#065F46" font-weight="bold"
-                                        font-size="16">PREM 1</text>
-                                    <text x="150" y="205" text-anchor="middle" fill="#065F46" font-size="12">$450</text>
-                                </g>
+                                    <!-- PREMIUM SECTIONS (Mid-range) -->
+                                    <g class="stage-section" data-section="PREM-1" data-price="450" data-available="40"
+                                        data-level="Premium">
+                                        <rect x="100" y="150" width="100" height="80" rx="10"
+                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
+                                        <text x="150" y="185" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            font-size="16">PREM 1</text>
+                                        <text x="150" y="205" text-anchor="middle" fill="#065F46"
+                                            font-size="12">$450</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="PREM-2" data-price="500" data-available="35"
-                                    data-level="Premium">
-                                    <rect x="250" y="100" width="120" height="60" rx="10" fill="url(#premiumGradient)"
-                                        stroke="#10B981" stroke-width="2" />
-                                    <text x="310" y="135" text-anchor="middle" fill="#065F46" font-weight="bold"
-                                        font-size="16">PREM 2</text>
-                                    <text x="310" y="152" text-anchor="middle" fill="#065F46" font-size="12">$500</text>
-                                </g>
+                                    <g class="stage-section" data-section="PREM-2" data-price="500" data-available="35"
+                                        data-level="Premium">
+                                        <rect x="250" y="100" width="120" height="60" rx="10"
+                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
+                                        <text x="310" y="135" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            font-size="16">PREM 2</text>
+                                        <text x="310" y="152" text-anchor="middle" fill="#065F46"
+                                            font-size="12">$500</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="PREM-3" data-price="500" data-available="35"
-                                    data-level="Premium">
-                                    <rect x="430" y="100" width="120" height="60" rx="10" fill="url(#premiumGradient)"
-                                        stroke="#10B981" stroke-width="2" />
-                                    <text x="490" y="135" text-anchor="middle" fill="#065F46" font-weight="bold"
-                                        font-size="16">PREM 3</text>
-                                    <text x="490" y="152" text-anchor="middle" fill="#065F46" font-size="12">$500</text>
-                                </g>
+                                    <g class="stage-section" data-section="PREM-3" data-price="500" data-available="35"
+                                        data-level="Premium">
+                                        <rect x="430" y="100" width="120" height="60" rx="10"
+                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
+                                        <text x="490" y="135" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            font-size="16">PREM 3</text>
+                                        <text x="490" y="152" text-anchor="middle" fill="#065F46"
+                                            font-size="12">$500</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="PREM-4" data-price="450" data-available="40"
-                                    data-level="Premium">
-                                    <rect x="600" y="150" width="100" height="80" rx="10" fill="url(#premiumGradient)"
-                                        stroke="#10B981" stroke-width="2" />
-                                    <text x="650" y="185" text-anchor="middle" fill="#065F46" font-weight="bold"
-                                        font-size="16">PREM 4</text>
-                                    <text x="650" y="205" text-anchor="middle" fill="#065F46" font-size="12">$450</text>
-                                </g>
+                                    <g class="stage-section" data-section="PREM-4" data-price="450" data-available="40"
+                                        data-level="Premium">
+                                        <rect x="600" y="150" width="100" height="80" rx="10"
+                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
+                                        <text x="650" y="185" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            font-size="16">PREM 4</text>
+                                        <text x="650" y="205" text-anchor="middle" fill="#065F46"
+                                            font-size="12">$450</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="PREM-5" data-price="450" data-available="40"
-                                    data-level="Premium">
-                                    <rect x="100" y="370" width="100" height="80" rx="10" fill="url(#premiumGradient)"
-                                        stroke="#10B981" stroke-width="2" />
-                                    <text x="150" y="405" text-anchor="middle" fill="#065F46" font-weight="bold"
-                                        font-size="16">PREM 5</text>
-                                    <text x="150" y="425" text-anchor="middle" fill="#065F46" font-size="12">$450</text>
-                                </g>
+                                    <g class="stage-section" data-section="PREM-5" data-price="450" data-available="40"
+                                        data-level="Premium">
+                                        <rect x="100" y="370" width="100" height="80" rx="10"
+                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
+                                        <text x="150" y="405" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            font-size="16">PREM 5</text>
+                                        <text x="150" y="425" text-anchor="middle" fill="#065F46"
+                                            font-size="12">$450</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="PREM-6" data-price="400" data-available="45"
-                                    data-level="Premium">
-                                    <rect x="250" y="440" width="120" height="60" rx="10" fill="url(#premiumGradient)"
-                                        stroke="#10B981" stroke-width="2" />
-                                    <text x="310" y="475" text-anchor="middle" fill="#065F46" font-weight="bold"
-                                        font-size="16">PREM 6</text>
-                                    <text x="310" y="492" text-anchor="middle" fill="#065F46" font-size="12">$400</text>
-                                </g>
+                                    <g class="stage-section" data-section="PREM-6" data-price="400" data-available="45"
+                                        data-level="Premium">
+                                        <rect x="250" y="440" width="120" height="60" rx="10"
+                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
+                                        <text x="310" y="475" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            font-size="16">PREM 6</text>
+                                        <text x="310" y="492" text-anchor="middle" fill="#065F46"
+                                            font-size="12">$400</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="PREM-7" data-price="400" data-available="45"
-                                    data-level="Premium">
-                                    <rect x="430" y="440" width="120" height="60" rx="10" fill="url(#premiumGradient)"
-                                        stroke="#10B981" stroke-width="2" />
-                                    <text x="490" y="475" text-anchor="middle" fill="#065F46" font-weight="bold"
-                                        font-size="16">PREM 7</text>
-                                    <text x="490" y="492" text-anchor="middle" fill="#065F46" font-size="12">$400</text>
-                                </g>
+                                    <g class="stage-section" data-section="PREM-7" data-price="400" data-available="45"
+                                        data-level="Premium">
+                                        <rect x="430" y="440" width="120" height="60" rx="10"
+                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
+                                        <text x="490" y="475" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            font-size="16">PREM 7</text>
+                                        <text x="490" y="492" text-anchor="middle" fill="#065F46"
+                                            font-size="12">$400</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="PREM-8" data-price="450" data-available="40"
-                                    data-level="Premium">
-                                    <rect x="600" y="370" width="100" height="80" rx="10" fill="url(#premiumGradient)"
-                                        stroke="#10B981" stroke-width="2" />
-                                    <text x="650" y="405" text-anchor="middle" fill="#065F46" font-weight="bold"
-                                        font-size="16">PREM 8</text>
-                                    <text x="650" y="425" text-anchor="middle" fill="#065F46" font-size="12">$450</text>
-                                </g>
+                                    <g class="stage-section" data-section="PREM-8" data-price="450" data-available="40"
+                                        data-level="Premium">
+                                        <rect x="600" y="370" width="100" height="80" rx="10"
+                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
+                                        <text x="650" y="405" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            font-size="16">PREM 8</text>
+                                        <text x="650" y="425" text-anchor="middle" fill="#065F46"
+                                            font-size="12">$450</text>
+                                    </g>
 
-                                <!-- STANDARD SECTIONS (Outer areas) -->
-                                <g class="stage-section" data-section="STD-1" data-price="200" data-available="80"
-                                    data-level="Standard">
-                                    <rect x="50" y="50" width="90" height="90" rx="8" fill="url(#standardGradient)"
-                                        stroke="#3B82F6" stroke-width="2" />
-                                    <text x="95" y="95" text-anchor="middle" fill="#1E40AF" font-weight="bold"
-                                        font-size="16">STD 1</text>
-                                    <text x="95" y="115" text-anchor="middle" fill="#1E40AF" font-size="12">$200</text>
-                                </g>
+                                    <!-- STANDARD SECTIONS (Outer areas) -->
+                                    <g class="stage-section" data-section="STD-1" data-price="200" data-available="80"
+                                        data-level="Standard">
+                                        <rect x="50" y="50" width="90" height="90" rx="8" fill="url(#standardGradient)"
+                                            stroke="#3B82F6" stroke-width="2" />
+                                        <text x="95" y="95" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                            font-size="16">STD 1</text>
+                                        <text x="95" y="115" text-anchor="middle" fill="#1E40AF"
+                                            font-size="12">$200</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="STD-2" data-price="220" data-available="70"
-                                    data-level="Standard">
-                                    <rect x="200" y="20" width="140" height="70" rx="8" fill="url(#standardGradient)"
-                                        stroke="#3B82F6" stroke-width="2" />
-                                    <text x="270" y="55" text-anchor="middle" fill="#1E40AF" font-weight="bold"
-                                        font-size="16">STD 2</text>
-                                    <text x="270" y="72" text-anchor="middle" fill="#1E40AF" font-size="12">$220</text>
-                                </g>
+                                    <g class="stage-section" data-section="STD-2" data-price="220" data-available="70"
+                                        data-level="Standard">
+                                        <rect x="200" y="20" width="140" height="70" rx="8"
+                                            fill="url(#standardGradient)" stroke="#3B82F6" stroke-width="2" />
+                                        <text x="270" y="55" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                            font-size="16">STD 2</text>
+                                        <text x="270" y="72" text-anchor="middle" fill="#1E40AF"
+                                            font-size="12">$220</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="STD-3" data-price="220" data-available="70"
-                                    data-level="Standard">
-                                    <rect x="460" y="20" width="140" height="70" rx="8" fill="url(#standardGradient)"
-                                        stroke="#3B82F6" stroke-width="2" />
-                                    <text x="530" y="55" text-anchor="middle" fill="#1E40AF" font-weight="bold"
-                                        font-size="16">STD 3</text>
-                                    <text x="530" y="72" text-anchor="middle" fill="#1E40AF" font-size="12">$220</text>
-                                </g>
+                                    <g class="stage-section" data-section="STD-3" data-price="220" data-available="70"
+                                        data-level="Standard">
+                                        <rect x="460" y="20" width="140" height="70" rx="8"
+                                            fill="url(#standardGradient)" stroke="#3B82F6" stroke-width="2" />
+                                        <text x="530" y="55" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                            font-size="16">STD 3</text>
+                                        <text x="530" y="72" text-anchor="middle" fill="#1E40AF"
+                                            font-size="12">$220</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="STD-4" data-price="200" data-available="80"
-                                    data-level="Standard">
-                                    <rect x="660" y="50" width="90" height="90" rx="8" fill="url(#standardGradient)"
-                                        stroke="#3B82F6" stroke-width="2" />
-                                    <text x="705" y="95" text-anchor="middle" fill="#1E40AF" font-weight="bold"
-                                        font-size="16">STD 4</text>
-                                    <text x="705" y="115" text-anchor="middle" fill="#1E40AF" font-size="12">$200</text>
-                                </g>
+                                    <g class="stage-section" data-section="STD-4" data-price="200" data-available="80"
+                                        data-level="Standard">
+                                        <rect x="660" y="50" width="90" height="90" rx="8" fill="url(#standardGradient)"
+                                            stroke="#3B82F6" stroke-width="2" />
+                                        <text x="705" y="95" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                            font-size="16">STD 4</text>
+                                        <text x="705" y="115" text-anchor="middle" fill="#1E40AF"
+                                            font-size="12">$200</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="STD-5" data-price="200" data-available="80"
-                                    data-level="Standard">
-                                    <rect x="50" y="460" width="90" height="90" rx="8" fill="url(#standardGradient)"
-                                        stroke="#3B82F6" stroke-width="2" />
-                                    <text x="95" y="505" text-anchor="middle" fill="#1E40AF" font-weight="bold"
-                                        font-size="16">STD 5</text>
-                                    <text x="95" y="525" text-anchor="middle" fill="#1E40AF" font-size="12">$200</text>
-                                </g>
+                                    <g class="stage-section" data-section="STD-5" data-price="200" data-available="80"
+                                        data-level="Standard">
+                                        <rect x="50" y="460" width="90" height="90" rx="8" fill="url(#standardGradient)"
+                                            stroke="#3B82F6" stroke-width="2" />
+                                        <text x="95" y="505" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                            font-size="16">STD 5</text>
+                                        <text x="95" y="525" text-anchor="middle" fill="#1E40AF"
+                                            font-size="12">$200</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="STD-6" data-price="180" data-available="90"
-                                    data-level="Standard">
-                                    <rect x="200" y="510" width="140" height="70" rx="8" fill="url(#standardGradient)"
-                                        stroke="#3B82F6" stroke-width="2" />
-                                    <text x="270" y="545" text-anchor="middle" fill="#1E40AF" font-weight="bold"
-                                        font-size="16">STD 6</text>
-                                    <text x="270" y="562" text-anchor="middle" fill="#1E40AF" font-size="12">$180</text>
-                                </g>
+                                    <g class="stage-section" data-section="STD-6" data-price="180" data-available="90"
+                                        data-level="Standard">
+                                        <rect x="200" y="510" width="140" height="70" rx="8"
+                                            fill="url(#standardGradient)" stroke="#3B82F6" stroke-width="2" />
+                                        <text x="270" y="545" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                            font-size="16">STD 6</text>
+                                        <text x="270" y="562" text-anchor="middle" fill="#1E40AF"
+                                            font-size="12">$180</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="STD-7" data-price="180" data-available="90"
-                                    data-level="Standard">
-                                    <rect x="460" y="510" width="140" height="70" rx="8" fill="url(#standardGradient)"
-                                        stroke="#3B82F6" stroke-width="2" />
-                                    <text x="530" y="545" text-anchor="middle" fill="#1E40AF" font-weight="bold"
-                                        font-size="16">STD 7</text>
-                                    <text x="530" y="562" text-anchor="middle" fill="#1E40AF" font-size="12">$180</text>
-                                </g>
+                                    <g class="stage-section" data-section="STD-7" data-price="180" data-available="90"
+                                        data-level="Standard">
+                                        <rect x="460" y="510" width="140" height="70" rx="8"
+                                            fill="url(#standardGradient)" stroke="#3B82F6" stroke-width="2" />
+                                        <text x="530" y="545" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                            font-size="16">STD 7</text>
+                                        <text x="530" y="562" text-anchor="middle" fill="#1E40AF"
+                                            font-size="12">$180</text>
+                                    </g>
 
-                                <g class="stage-section" data-section="STD-8" data-price="200" data-available="80"
-                                    data-level="Standard">
-                                    <rect x="660" y="460" width="90" height="90" rx="8" fill="url(#standardGradient)"
-                                        stroke="#3B82F6" stroke-width="2" />
-                                    <text x="705" y="505" text-anchor="middle" fill="#1E40AF" font-weight="bold"
-                                        font-size="16">STD 8</text>
-                                    <text x="705" y="525" text-anchor="middle" fill="#1E40AF" font-size="12">$200</text>
-                                </g>
+                                    <g class="stage-section" data-section="STD-8" data-price="200" data-available="80"
+                                        data-level="Standard">
+                                        <rect x="660" y="460" width="90" height="90" rx="8"
+                                            fill="url(#standardGradient)" stroke="#3B82F6" stroke-width="2" />
+                                        <text x="705" y="505" text-anchor="middle" fill="#1E40AF" font-weight="bold"
+                                            font-size="16">STD 8</text>
+                                        <text x="705" y="525" text-anchor="middle" fill="#1E40AF"
+                                            font-size="12">$200</text>
+                                    </g>
 
-                            </svg>
+                                </svg>
+                            </div><!-- Close map-container div for touch scrolling -->
 
                             <!-- Lower Bowl Sections (100s) - Professional Arena Layout -->
                             <!-- South Baseline (Behind Court) -->
@@ -1592,6 +1659,36 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function () {
+            // Mobile-specific enhancements for map
+            const isMobile = window.innerWidth <= 768;
+            const mapContainer = document.getElementById('map-container');
+
+            if (isMobile && mapContainer) {
+                // Add visible hint for mobile users
+                const mobileHint = document.createElement('div');
+                mobileHint.className = 'text-xs text-center text-gray-500 dark:text-gray-400 mt-2 mb-1';
+                mobileHint.innerText = 'Tap sections to select • Scroll to pan';
+                mapContainer.parentNode.insertBefore(mobileHint, mapContainer);
+
+                // Increase tap target size on mobile
+                document.querySelectorAll('.stage-section rect').forEach(rect => {
+                    const currentWidth = parseInt(rect.getAttribute('stroke-width') || '2');
+                    rect.setAttribute('stroke-width', Math.max(currentWidth, 3).toString());
+                });
+            }
+
+            // Handle window resize for responsive adjustments
+            window.addEventListener('resize', function () {
+                if (window.innerWidth <= 768 !== isMobile) {
+                    // Only reload if transitioning between mobile and desktop
+                    setTimeout(() => {
+                        if (window.innerWidth <= 768 !== isMobile) {
+                            location.reload();
+                        }
+                    }, 300);
+                }
+            });
+
             setupEventListeners();
             loadEvent('basketball');
         });
@@ -1710,6 +1807,26 @@
             // Hide default info and show details
             document.getElementById('defaultInfo').classList.add('hidden');
             document.getElementById('sectionDetails').classList.remove('hidden');
+
+            // Add mobile-specific enhancements
+            if (window.innerWidth <= 768) {
+                // Scroll to section details on mobile for better visibility
+                const sectionDetailsPanel = document.getElementById('sectionDetails');
+                if (sectionDetailsPanel) {
+                    setTimeout(() => {
+                        sectionDetailsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 100);
+                }
+
+                // Add vibration feedback if supported
+                if ('vibrate' in navigator) {
+                    try {
+                        navigator.vibrate(50); // Short vibration for feedback
+                    } catch (e) {
+                        // Ignore vibration errors
+                    }
+                }
+            }
 
             // Add animation
             document.getElementById('sectionDetails').classList.add('fade-in');
