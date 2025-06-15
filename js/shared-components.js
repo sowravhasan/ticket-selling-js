@@ -2,6 +2,35 @@
 
 // Add Header Component
 function addHeader() {
+  // Add CSS for animated underline effect
+  const styleElement = document.createElement("style");
+  styleElement.textContent = `
+    .nav-link {
+      position: relative;
+      padding-bottom: 5px;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: currentColor;
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .nav-link.active::after {
+      width: 100%;
+    }
+  `;
+  document.head.appendChild(styleElement);
+
   const header = document.createElement("header");
   header.innerHTML = `        <nav class="fixed w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-lg transition-all duration-300">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,13 +53,11 @@ function addHeader() {
                             </svg>
                         </button>
                     </div>                    <!-- Desktop menu -->
-                    <div class="hidden lg:flex lg:items-center lg:space-x-8">
-                        <a href="index.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Home</a>
+                    <div class="hidden lg:flex lg:items-center lg:space-x-8">                        <a href="index.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Home</a>
                         <a href="box-office.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Box Office</a>
                         <a href="planner.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Event Planner</a>
                         <a href="information.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Information</a>
                         <a href="calendar.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Calendar</a>
-                        <a href="interactive-map.html" class="nav-link text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent font-medium transition-colors">Seating Map</a>
                         <!-- Theme Toggle Button -->
                         <button id="nav-theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300">
                             <svg class="w-5 h-5 text-gray-700 dark:text-gray-200 dark:hidden" fill="currentColor" viewBox="0 0 20 20">
@@ -46,15 +73,12 @@ function addHeader() {
                     </div>
                 </div>
             </div>            <!-- Mobile menu -->
-            <div class="lg:hidden hidden" id="mobile-menu">
-                <div class="pt-2 pb-3 space-y-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-t border-gray-200 dark:border-gray-700">
-                    <a href="index.html" class="mobile-menu-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-primary dark:hover:border-accent border-l-4 border-transparent transition-all">Home</a>
-                    <a href="box-office.html" class="mobile-menu-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-primary dark:hover:border-accent border-l-4 border-transparent transition-all">Box Office</a>
-                    <a href="planner.html" class="mobile-menu-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-primary dark:hover:border-accent border-l-4 border-transparent transition-all">Event Planner</a>
-                    <a href="information.html" class="mobile-menu-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-primary dark:hover:border-accent border-l-4 border-transparent transition-all">Information</a>
-                    <a href="calendar.html" class="mobile-menu-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-primary dark:hover:border-accent border-l-4 border-transparent transition-all">Calendar</a>
-                    <a href="interactive-map.html" class="mobile-menu-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-primary dark:hover:border-accent border-l-4 border-transparent transition-all">Seating Map</a>
-                    <a href="contact-us.html" class="mobile-menu-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-primary dark:hover:border-accent border-l-4 border-transparent transition-all">Contact Us</a>
+            <div class="lg:hidden hidden" id="mobile-menu">                <div class="pt-2 pb-3 space-y-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-t border-gray-200 dark:border-gray-700">                    <a href="index.html" class="mobile-menu-link nav-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent transition-all">Home</a>
+                    <a href="box-office.html" class="mobile-menu-link nav-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent transition-all">Box Office</a>
+                    <a href="planner.html" class="mobile-menu-link nav-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent transition-all">Event Planner</a>
+                    <a href="information.html" class="mobile-menu-link nav-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent transition-all">Information</a>
+                    <a href="calendar.html" class="mobile-menu-link nav-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent transition-all">Calendar</a>
+                    <a href="contact-us.html" class="mobile-menu-link nav-link block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent transition-all">Contact Us</a>
                 </div>
             </div>
         </nav>
@@ -362,6 +386,48 @@ function addGlobalDarkModeStyles() {
   document.head.appendChild(style);
 }
 
+// Add chatbot component
+function addChatbot() {
+  // Only load chatbot when user interacts with the page
+  window.addEventListener("mouseover", initLandbot, { once: true });
+  window.addEventListener("touchstart", initLandbot, { once: true });
+  window.addEventListener("scroll", initLandbot, { once: true });
+
+  var myLandbotInitialized = false;
+  function initLandbot() {
+    if (!myLandbotInitialized) {
+      myLandbotInitialized = true;
+
+      // Show loading indicator
+      const chatIndicator = document.createElement("div");
+      chatIndicator.className =
+        "fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg z-40";
+      chatIndicator.innerHTML = `
+        <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      `;
+      document.body.appendChild(chatIndicator);
+
+      // Load script
+      var s = document.createElement("script");
+      s.type = "module";
+      s.async = true;
+      s.addEventListener("load", function () {
+        document.body.removeChild(chatIndicator);
+        var myLandbot = new Landbot.Livechat({
+          configUrl:
+            "https://storage.googleapis.com/landbot.site/v3/H-2851272-Q9LAFREW126LFZTM/index.json",
+        });
+      });
+      s.src = "https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs";
+      var x = document.getElementsByTagName("script")[0];
+      x.parentNode.insertBefore(s, x);
+    }
+  }
+}
+
 // Initialize all shared components
 function initSharedComponents() {
   addGlobalDarkModeStyles();
@@ -370,6 +436,7 @@ function initSharedComponents() {
   addBackToTop();
   addDarkModeToggle();
   addGlobalDarkModeStyles();
+  addChatbot();
 
   // Mobile menu functionality
   const mobileMenuButton = document.querySelector(".mobile-menu-button");
@@ -389,12 +456,11 @@ function initSharedComponents() {
         mobileMenu.classList.add("hidden");
       }
     });
-  }
-  // Update active nav link based on current page
+  } // Update active nav link based on current page
   const currentPage = window.location.pathname.split("/").pop() || "index.html";
-  document.querySelectorAll(".nav-link").forEach((link) => {
+  document.querySelectorAll(".nav-link, .mobile-menu-link").forEach((link) => {
     if (link.getAttribute("href") === currentPage) {
-      link.classList.add("text-primary", "dark:text-accent");
+      link.classList.add("text-primary", "dark:text-accent", "active");
       link.classList.remove("text-gray-700", "dark:text-gray-200");
     }
   });
