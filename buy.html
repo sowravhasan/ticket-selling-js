@@ -104,6 +104,27 @@
             fill: rgb(147 197 253 / var(--tw-text-opacity, 1)) !important;
         }
 
+        /* Improved visibility for selected ticket options in dark mode */
+        .dark .peer-checked\:text-primary {
+            --tw-text-opacity: 1 !important;
+            color: rgb(219 234 254 / var(--tw-text-opacity, 1)) !important;
+            /* #DBEAFE - blue-100 for better contrast in dark mode */
+        }
+
+        /* Ensure unselected items maintain normal dark border */
+        .dark label {
+            border-color: rgb(75 85 99) !important;
+            /* #4B5563 - gray-600 for unselected items in dark mode */
+        }
+
+        /* Only selected items get the highlighted border */
+        .dark .peer:checked+label {
+            border-color: rgb(96 165 250) !important;
+            /* #60A5FA - blue-400 for selected item only */
+            background-color: rgb(30 41 59 / 0.8) !important;
+            /* #1E293B with opacity for subtle highlight */
+        }
+
         /* Dark mode styles */
         .dark body {
             background-color: #111827;
@@ -171,7 +192,7 @@
                                         checked>
                                     <label for="general"
                                         class="flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-pointer peer-checked:border-primary peer-checked:text-primary transition-all duration-200 h-full">
-                                        <span class="text-lg font-medium">General Admission</span>
+                                        <span class="text-lg font-medium">Arena Seating</span>
                                         <span class="text-2xl font-bold mt-2">$49.99</span>
                                     </label>
                                 </div>
@@ -179,7 +200,7 @@
                                     <input type="radio" id="vip" name="ticket" value="vip" class="hidden peer">
                                     <label for="vip"
                                         class="flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-pointer peer-checked:border-primary peer-checked:text-primary transition-all duration-200 h-full">
-                                        <span class="text-lg font-medium">VIP Access</span>
+                                        <span class="text-lg font-medium">Club Level</span>
                                         <span class="text-2xl font-bold mt-2">$99.99</span>
                                     </label>
                                 </div>
