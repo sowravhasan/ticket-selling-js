@@ -1,6 +1,9 @@
 // Shared Components for all pages
 
-// Add Header Component
+// Add Header Compon  const header = document.createElement("header");
+header.innerHTML = `        <nav class="fixed w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-lg transition-all duration-300" style="max-width: 100vw; overflow-x: hidden;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="max-width: 100%;">
+                <div class="flex justify-between h-20 relative">`;
 function addHeader() {
   // Add CSS for animated underline effect
   const styleElement = document.createElement("style");
@@ -26,35 +29,53 @@ function addHeader() {
     }
       .nav-link.active::after {
       width: 100%;
-    }
-
-    /* Mobile-specific menu enhancements */
+    }    /* Mobile-specific menu enhancements */
     @media (max-width: 768px) {
       /* Better tap targets for mobile */
       .mobile-menu-link {
         padding: 12px 16px !important;
         margin: 4px 0 !important;
       }
-      
-      /* Make hamburger menu more visible */
+        /* Make hamburger menu more visible and contained within bounds */
       .mobile-menu-button {
-        padding: 8px !important;
+        padding: 10px !important;
+        position: relative !important;
+        right: 0 !important;
+        z-index: 50 !important;
+        margin-right: 0 !important;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1) !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 6px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      
+      /* Ensure header stays within bounds */
+      nav {
+        overflow-x: hidden !important;
+        width: 100% !important;
+      }
+
+      /* Improved container for mobile menu */
+      .flex.justify-between {
+        width: 100% !important;
+        padding-right: 8px !important;
       }
     }
   `;
   document.head.appendChild(styleElement);
   const header = document.createElement("header");
-  header.innerHTML = `        <nav class="fixed w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-lg transition-all duration-300">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-20">
+  header.innerHTML = `        <nav class="fixed w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-lg transition-all duration-300" style="overflow-x: hidden;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="max-width: 100%;">
+                <div class="flex justify-between h-20 relative">
                     <div class="flex-shrink-0 flex items-center">
                         <a href="index.html" class="block">
                             <img src="assets/logo.png" alt="Logo" class="h-12 w-auto">
                         </a>
                     </div>
-                    
-                    <!-- Mobile menu button -->
-                    <div class="flex items-center lg:hidden">
+                      <!-- Mobile menu button -->
+                    <div class="flex items-center lg:hidden" style="position: relative; z-index: 50;">
                         <button type="button" 
                                 class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                                 aria-controls="mobile-menu" 
@@ -88,10 +109,9 @@ function addHeader() {
                     </div>
                 </div>
             </div>
-            
-            <!-- Mobile menu -->
-            <div class="lg:hidden hidden" id="mobile-menu">
-                <div class="pt-2 pb-3 space-y-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-t border-gray-200 dark:border-gray-700">
+              <!-- Mobile menu -->
+            <div class="lg:hidden hidden" id="mobile-menu" style="max-width: 100vw; overflow-x: hidden;">
+                <div class="pt-2 pb-3 space-y-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-t border-gray-200 dark:border-gray-700" style="max-width: 100%; overflow-x: hidden;">
                     <a href="index.html" class="mobile-menu-link nav-link block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent transition-all">Home</a>
                     <a href="box-office.html" class="mobile-menu-link nav-link block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent transition-all">Box Office</a>
                     <a href="planner.html" class="mobile-menu-link nav-link block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-accent transition-all">Event Planner</a>
@@ -462,23 +482,30 @@ function addGlobalDarkModeStyles() {
 function addChatbot() {
   // Add responsive styles for Landbot
   const landbotStyle = document.createElement("style");
-  landbotStyle.textContent = `
-    /* Landbot responsive fixes */
+  landbotStyle.textContent = `    /* Landbot responsive fixes */
     @media (max-width: 768px) {
       #landbot-container {
-        max-height: 70vh !important;
-        max-width: 90vw !important;
-        bottom: 80px !important;
+        max-height: 60vh !important;
+        max-width: 85vw !important;
+        bottom: 70px !important;
         right: 10px !important;
         left: auto !important;
         z-index: 40 !important;
+        transform-origin: bottom right !important;
+        transform: scale(0.9) !important;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2) !important;
+        max-width: calc(100vw - 20px) !important;
+        overflow: hidden !important;
       }
       
       #landbot-launcher-button {
-        bottom: 20px !important;
-        right: 16px !important;
+        bottom: 15px !important;
+        right: 15px !important;
         z-index: 39 !important;
         transform: scale(0.85) !important;
+        transition: all 0.3s ease !important;
+        position: fixed !important;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.25) !important;
       }
         .Landbot__iframeContainer {
         max-height: calc(100% - 20px) !important;
@@ -544,13 +571,16 @@ function addChatbot() {
           const landbotContainer = document.querySelector("#landbot-container");
           if (landbotContainer) {
             // Add responsive class
-            landbotContainer.style.bottom = "60px";
-
-            // Adjust on mobile
+            landbotContainer.style.bottom = "60px"; // Adjust on mobile
             if (window.innerWidth < 768) {
-              landbotContainer.style.bottom = "80px";
-              landbotContainer.style.right = "10px";
+              landbotContainer.style.bottom = "70px";
+              landbotContainer.style.right = "15px";
               landbotContainer.style.zIndex = "40";
+              landbotContainer.style.transformOrigin = "bottom right";
+              landbotContainer.style.transform = "scale(0.9)";
+              landbotContainer.style.maxWidth = "calc(100vw - 20px)";
+              landbotContainer.style.boxShadow = "0 0 15px rgba(0,0,0,0.2)";
+              landbotContainer.style.overflow = "hidden";
 
               // Add a higher container to track when chatbot is open
               const chatbotWrapper = document.createElement("div");
@@ -559,6 +589,8 @@ function addChatbot() {
               chatbotWrapper.style.bottom = "0";
               chatbotWrapper.style.right = "0";
               chatbotWrapper.style.zIndex = "38";
+              chatbotWrapper.style.maxWidth = "100vw";
+              chatbotWrapper.style.overflow = "hidden";
 
               // Move the landbot container into our wrapper
               if (landbotContainer.parentNode) {
@@ -575,10 +607,16 @@ function addChatbot() {
           if (launcherButton) {
             // Adjust the launcher button position on mobile
             if (window.innerWidth < 768) {
-              launcherButton.style.bottom = "20px";
-              launcherButton.style.right = "16px";
+              launcherButton.style.bottom = "15px";
+              launcherButton.style.right = "15px";
               launcherButton.style.zIndex = "39";
+              launcherButton.style.position = "fixed";
               launcherButton.style.transform = "scale(0.85)";
+              launcherButton.style.boxShadow = "0 3px 12px rgba(0,0,0,0.25)";
+              launcherButton.style.right = "10px";
+              launcherButton.style.zIndex = "39";
+              launcherButton.style.transform = "scale(0.8)";
+              launcherButton.style.transition = "all 0.3s ease";
 
               // When mobile menu opens, we want to adjust the chatbot
               const mobileMenuButton = document.querySelector(
@@ -599,25 +637,31 @@ function addChatbot() {
             const launcherButton = document.querySelector(
               "#landbot-launcher-button"
             );
-
             if (window.innerWidth < 768) {
               if (landbotContainer) {
-                landbotContainer.style.bottom = "80px";
-                landbotContainer.style.right = "10px";
+                landbotContainer.style.bottom = "70px";
+                landbotContainer.style.right = "15px";
                 landbotContainer.style.zIndex = "40";
+                landbotContainer.style.transformOrigin = "bottom right";
+                landbotContainer.style.transform = "scale(0.9)";
+                landbotContainer.style.maxWidth = "calc(100vw - 20px)";
+                landbotContainer.style.overflow = "hidden";
               }
+
               if (launcherButton) {
-                launcherButton.style.bottom = "20px";
-                launcherButton.style.right = "16px";
+                launcherButton.style.bottom = "15px";
+                launcherButton.style.right = "15px";
                 launcherButton.style.zIndex = "39";
+                launcherButton.style.position = "fixed";
                 launcherButton.style.transform = "scale(0.85)";
               }
             } else {
               if (landbotContainer) {
                 landbotContainer.style.bottom = "60px";
+                landbotContainer.style.transform = "scale(1)";
               }
+
               if (launcherButton) {
-                launcherButton.style.bottom = "20px";
                 launcherButton.style.transform = "scale(1)";
               }
             }

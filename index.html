@@ -31,6 +31,51 @@
       transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
+    /* Global container fixes */
+    html,
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      position: relative;
+    }
+
+    /* Further responsive improvements for mobile */
+    @media (max-width: 768px) {
+
+      /* Ensure all fixed elements respect viewport boundaries */
+      #landbot-container,
+      #landbot-launcher-button,
+      .mobile-menu-button {
+        max-width: calc(100vw - 20px);
+        transform-origin: bottom right;
+        right: 15px !important;
+      }
+
+      /* Prevent horizontal scroll on mobile */
+      .container,
+      section,
+      header,
+      nav {
+        max-width: 100vw;
+        overflow-x: hidden;
+      }
+
+      /* Ensure buttons have enough margin from edge */
+      .fixed,
+      .absolute {
+        margin-right: auto;
+        margin-left: auto;
+      }
+
+      /* Better handling of the hero section glass cards on very small screens */
+      .glass-card {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
     /* Text Primary Color - Accessible for both light and dark themes */
     .text-primary {
       --tw-text-opacity: 1 !important;
@@ -50,30 +95,48 @@
     /* Mobile responsive fixes for Landbot widget */
     @media (max-width: 768px) {
       #landbot-container {
-        max-height: 70vh !important;
-        max-width: 90vw !important;
-        bottom: 80px !important;
+        max-height: 65vh !important;
+        max-width: 85vw !important;
+        bottom: 70px !important;
         right: 10px !important;
         left: auto !important;
         z-index: 40 !important;
+        transform-origin: bottom right !important;
+        transform: scale(0.95) !important;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2) !important;
       }
 
       #landbot-launcher-button {
-        bottom: 20px !important;
-        right: 16px !important;
+        bottom: 10px !important;
+        right: 10px !important;
         z-index: 39 !important;
-        transform: scale(0.85) !important;
+        transform: scale(0.8) !important;
+        transition: all 0.3s ease !important;
+      }
+
+      /* Fix for layout overflow issues */
+      body {
+        overflow-x: hidden !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        position: relative !important;
+      }
+
+      /* Fix for hamburger menu positioning */
+      header nav {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+      }
+
+      .mobile-menu-button {
+        position: relative !important;
+        z-index: 50 !important;
       }
 
       /* Fix for interactive map - ensure chatbot doesn't block interactions */
       #map-container,
       .arena-svg {
         z-index: 1 !important;
-      }
-
-      /* Ensure the chatbot doesn't interfere with navigation */
-      .mobile-menu-button {
-        z-index: 50 !important;
       }
 
       /* Better spacing on small mobile screens */
@@ -240,6 +303,27 @@
         overflow: hidden;
         /* Ensure we show exactly 6 digits */
         letter-spacing: -0.5px;
+        white-space: nowrap;
+      }
+
+      /* Better containment for glass cards on mobile */
+      .glass-card {
+        padding: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: calc(100% - 20px) !important;
+      }
+
+      /* Ensure the stats text stays within bounds */
+      .glass-card p {
+        font-size: 0.875rem !important;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
 
@@ -593,20 +677,24 @@
     // Counter Animation
     function animateCounters() {
       const counters = document.querySelectorAll('.stats-counter');
-      
-      // Function to format the numbers correctly
+
+      // Function to format the numbers correctly 
       function formatNumber(number, id) {
         // Format to exactly 6 digits for seatingCount and eventsCount
         if (id === 'seatingCount' || id === 'eventsCount') {
           let numStr = number.toString();
+          // Always ensure exactly 6 digits
+
           // If more than 6 digits, truncate to 6
           if (numStr.length > 6) {
             return numStr.substring(0, 6);
           }
-          // If less than 6 digits, pad with zeros (unlikely with these large numbers)
+
+          // If less than 6 digits, pad with zeros to ensure 6 digits
           while (numStr.length < 6) {
-            numStr += '0';
+            numStr = numStr + '0';
           }
+
           return numStr;
         }
         // For other counters (like venues), just return the number
