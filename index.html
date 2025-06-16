@@ -222,18 +222,46 @@
         padding: 1rem !important;
       }
 
+      /* Comprehensive hero section layout for mobile */
+      section.relative.h-screen {
+        height: auto !important;
+        min-height: 100vh !important;
+        padding: 80px 0 20px !important; /* Top and bottom padding */
+      }
+
+      /* Hero heading adjustment for mobile */
+      .text-4xl.md\:text-5xl.lg\:text-7xl.font-bold.mb-6.animate-fadeInUp {
+        margin-top: 2rem !important;
+        font-size: 2.25rem !important;
+        position: relative !important;
+        z-index: 10 !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7) !important;
+      }
+
+      /* Stats section adjustments */
+      .grid.grid-cols-1.md\:grid-cols-3 {
+        margin-top: 1rem !important;
+        gap: 0.5rem !important;
+      }
+
       /* Stats counter adjustments for mobile */
       .stats-counter {
-        font-size: 2rem !important;
+        font-size: 1.75rem !important;
         line-height: 1.2 !important;
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
-      /* More vertical spacing between mobile buttons */
-      .mobile-button-container>a {
-        margin-bottom: 0.75rem;
+      /* More vertical spacing between mobile buttons with reduced size */
+      .mobile-button-container {
+        margin-top: 1rem !important;
+      }
+      
+      .mobile-button-container > a {
+        margin-bottom: 0.5rem !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.875rem !important;
       }
     }
 
@@ -348,7 +376,8 @@
       </div>
       <div class="relative h-full flex items-center justify-center text-center text-white">
         <div class="max-w-4xl mx-auto px-4">
-          <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 animate-fadeInUp" style="animation-delay: 0.2s;">
+          <h1 class="text-4xl md:text-5xl lg:text-7xl sm:mt-6 font-bold mb-6 animate-fadeInUp"
+            style="animation-delay: 0.2s;">
             Patriot Arena</h1>
           <p class="text-xl md:text-2xl mb-8 animate-fadeInUp" style="animation-delay: 0.4s;">Uniting Our Community, One
             Event at a
