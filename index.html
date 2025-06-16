@@ -388,6 +388,74 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+
+    /* Carousel Styles */
+    .carousel-track {
+      will-change: transform;
+    }
+
+    .carousel-slide {
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .carousel-dot {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-dot:hover {
+      transform: scale(1.2);
+    }
+
+    .carousel-dot.active {
+      background-color: #1E3A8A !important;
+      transform: scale(1.1);
+    }
+
+    /* Smooth scrolling for carousel */
+    @media (prefers-reduced-motion: no-preference) {
+      .carousel-track {
+        scroll-behavior: smooth;
+      }
+    }
+
+    /* Responsive carousel adjustments */
+    @media (max-width: 768px) {
+      .carousel-slide {
+        width: 100% !important;
+      }
+
+      /* Mobile arrow positioning */
+      .carousel-container {
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
+      }
+
+      #prevBtn,
+      #nextBtn {
+        padding: 0.5rem !important;
+        left: 0.5rem !important;
+        right: 0.5rem !important;
+      }
+
+      #prevBtn svg,
+      #nextBtn svg {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .carousel-slide {
+        width: 50% !important;
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .carousel-slide {
+        width: 33.333333% !important;
+      }
+    }
   </style>
 </head>
 
@@ -459,97 +527,172 @@
         <h2 class="text-4xl font-bold text-center mb-16 text-gray-900 dark:text-white" data-aos="fade-up">Upcoming
           Events
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Basketball Championship -->
-          <div class="hover-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden" data-aos="fade-up"
-            data-aos-delay="100">
-            <div class="relative">
-              <img
-                src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/rockcms/2024-05/240509-nba-game-ch-1311-f72588.jpg"
-                alt="Basketball Championship" class="w-full h-48 object-cover">
-              <div class="absolute top-4 right-4 bg-primary text-white rounded-lg p-2 text-center shadow-md">
-                <span class="block text-2xl font-bold leading-none">19</span>
-                <span class="block text-sm uppercase">JAN</span>
+
+        <!-- Carousel Container -->
+        <div class="relative carousel-container px-12 md:px-16 lg:px-20">
+          <!-- Navigation Arrows (Outside) -->
+          <button id="prevBtn"
+            class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 dark:bg-white text-white dark:text-gray-800 rounded-full p-3 shadow-lg hover:bg-gray-700 dark:hover:bg-gray-100 transition-all duration-300 z-10">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button id="nextBtn"
+            class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 dark:bg-white text-white dark:text-gray-800 rounded-full p-3 shadow-lg hover:bg-gray-700 dark:hover:bg-gray-100 transition-all duration-300 z-10">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          <!-- Carousel Wrapper -->
+          <div class="overflow-hidden rounded-lg">
+            <div class="carousel-track flex transition-transform duration-500 ease-in-out" id="carousel-track">
+              <!-- Basketball Championship -->
+              <div class="carousel-slide w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                <div class="hover-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full"
+                  data-aos="fade-up" data-aos-delay="100">
+                  <div class="relative">
+                    <img
+                      src="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/rockcms/2024-05/240509-nba-game-ch-1311-f72588.jpg"
+                      alt="Basketball Championship" class="w-full h-48 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white rounded-lg p-2 text-center shadow-md">
+                      <span class="block text-2xl font-bold leading-none">19</span>
+                      <span class="block text-sm uppercase">JAN</span>
+                    </div>
+                  </div>
+                  <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Basketball Championship</h3>
+                    <div class="flex items-center text-gray-500 dark:text-gray-300 mb-4">
+                      <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                      </svg>
+                      <span>7:00 PM - January 19, 2025</span>
+                    </div>
+                    <a href="calendar.html"
+                      class="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-all duration-300">
+                      View Details
+                      <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Basketball Championship</h3>
-              <div class="flex items-center text-gray-500 dark:text-gray-300 mb-4">
-                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                </svg>
-                <span>7:00 PM - January 19, 2025</span>
+
+              <!-- Local Trade Show -->
+              <div class="carousel-slide w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                <div class="hover-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full"
+                  data-aos="fade-up" data-aos-delay="200">
+                  <div class="relative">
+                    <img
+                      src="https://img.tradefest.io/filters:quality(80)/filters:format(.webp)/fit-in/1920x0/tradefest/static/tradeshow-illustration.jpeg"
+                      alt="Local Trade Show" class="w-full h-48 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white rounded-lg p-2 text-center shadow-md">
+                      <span class="block text-2xl font-bold leading-none">21</span>
+                      <span class="block text-sm uppercase">JAN</span>
+                    </div>
+                  </div>
+                  <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Local Trade Show</h3>
+                    <div class="flex items-center text-gray-500 dark:text-gray-300 mb-4">
+                      <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                      </svg>
+                      <span>10:00 AM - January 21, 2025</span>
+                    </div>
+                    <a href="calendar.html"
+                      class="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-all duration-300">
+                      View Details
+                      <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
               </div>
-              <a href="calendar.html"
-                class="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-all duration-300">
-                View Details
-                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </a>
+
+              <!-- Science Competition -->
+              <div class="carousel-slide w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                <div class="hover-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full"
+                  data-aos="fade-up" data-aos-delay="300">
+                  <div class="relative">
+                    <img src="assets/GettyImages1267224264-6179b53b-a9af-4774-9cb6-d692704578e2.jpg.png"
+                      alt="Science Competition" class="w-full h-48 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white rounded-lg p-2 text-center shadow-md">
+                      <span class="block text-2xl font-bold leading-none">22</span>
+                      <span class="block text-sm uppercase">DEC</span>
+                    </div>
+                  </div>
+                  <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Science Competition</h3>
+                    <div class="flex items-center text-gray-500 dark:text-gray-300 mb-4">
+                      <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                      </svg>
+                      <span>9:00 AM - December 22, 2024</span>
+                    </div>
+                    <a href="calendar.html"
+                      class="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-all duration-300">
+                      View Details
+                      <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add more event slides for demonstration -->
+              <!-- Summer Concert -->
+              <div class="carousel-slide w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                <div class="hover-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden h-full"
+                  data-aos="fade-up" data-aos-delay="400">
+                  <div class="relative">
+                    <img src="assets/green-lantern-concert.png" alt="Summer Concert" class="w-full h-48 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white rounded-lg p-2 text-center shadow-md">
+                      <span class="block text-2xl font-bold leading-none">25</span>
+                      <span class="block text-sm uppercase">JAN</span>
+                    </div>
+                  </div>
+                  <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Summer Concert</h3>
+                    <div class="flex items-center text-gray-500 dark:text-gray-300 mb-4">
+                      <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                      </svg>
+                      <span>8:00 PM - January 25, 2025</span>
+                    </div>
+                    <a href="calendar.html"
+                      class="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-all duration-300">
+                      View Details
+                      <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Local Trade Show -->
-          <div class="hover-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden" data-aos="fade-up"
-            data-aos-delay="200">
-            <div class="relative">
-              <img
-                src="https://img.tradefest.io/filters:quality(80)/filters:format(.webp)/fit-in/1920x0/tradefest/static/tradeshow-illustration.jpeg"
-                alt="Local Trade Show" class="w-full h-48 object-cover">
-              <div class="absolute top-4 right-4 bg-primary text-white rounded-lg p-2 text-center shadow-md">
-                <span class="block text-2xl font-bold leading-none">21</span>
-                <span class="block text-sm uppercase">JAN</span>
-              </div>
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Local Trade Show</h3>
-              <div class="flex items-center text-gray-500 dark:text-gray-300 mb-4">
-                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                </svg>
-                <span>10:00 AM - January 21, 2025</span>
-              </div>
-              <a href="calendar.html"
-                class="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-all duration-300">
-                View Details
-                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Science Competition -->
-          <div class="hover-card bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden" data-aos="fade-up"
-            data-aos-delay="300">
-            <div class="relative">
-              <img src="assets/GettyImages1267224264-6179b53b-a9af-4774-9cb6-d692704578e2.jpg.png"
-                alt="Science Competition" class="w-full h-48 object-cover">
-              <div class="absolute top-4 right-4 bg-primary text-white rounded-lg p-2 text-center shadow-md">
-                <span class="block text-2xl font-bold leading-none">22</span>
-                <span class="block text-sm uppercase">DEC</span>
-              </div>
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Science Competition</h3>
-              <div class="flex items-center text-gray-500 dark:text-gray-300 mb-4">
-                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                </svg>
-                <span>9:00 AM - December 22, 2024</span>
-              </div>
-              <a href="calendar.html"
-                class="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-all duration-300">
-                View Details
-                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </a>
-            </div>
+          <!-- Dots Navigation -->
+          <div class="flex justify-center mt-8 space-x-2" id="dotsContainer">
+            <button class="carousel-dot w-3 h-3 rounded-full bg-primary transition-all duration-300"
+              data-slide="0"></button>
+            <button class="carousel-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300"
+              data-slide="1"></button>
+            <button class="carousel-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300"
+              data-slide="2"></button>
+            <button class="carousel-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300"
+              data-slide="3"></button>
           </div>
         </div>
 
@@ -798,6 +941,152 @@
           });
         }
       });
+    });
+
+    // Events Carousel Functionality
+    class EventsCarousel {
+      constructor() {
+        this.track = document.getElementById('carousel-track');
+        this.slides = document.querySelectorAll('.carousel-slide');
+        this.dots = document.querySelectorAll('.carousel-dot');
+        this.prevBtn = document.getElementById('prevBtn');
+        this.nextBtn = document.getElementById('nextBtn');
+
+        this.currentSlide = 0;
+        this.totalSlides = this.slides.length;
+        this.slidesToShow = this.getSlidesToShow();
+        this.maxSlide = this.totalSlides - this.slidesToShow;
+
+        this.init();
+        this.setupEventListeners();
+        this.setupResponsive();
+      }
+
+      getSlidesToShow() {
+        if (window.innerWidth >= 1024) return 3; // lg screens
+        if (window.innerWidth >= 768) return 2; // md screens
+        return 1; // sm screens
+      }
+
+      init() {
+        this.updateCarousel();
+        this.updateDots();
+      }
+
+      updateCarousel() {
+        const translateX = -(this.currentSlide * (100 / this.slidesToShow));
+        this.track.style.transform = `translateX(${translateX}%)`;
+      }
+
+      updateDots() {
+        this.dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === this.currentSlide);
+        });
+      }
+
+      nextSlide() {
+        if (this.currentSlide < this.maxSlide) {
+          this.currentSlide++;
+        } else {
+          this.currentSlide = 0; // Loop back to start
+        }
+        this.updateCarousel();
+        this.updateDots();
+      }
+
+      prevSlide() {
+        if (this.currentSlide > 0) {
+          this.currentSlide--;
+        } else {
+          this.currentSlide = this.maxSlide; // Loop to end
+        }
+        this.updateCarousel();
+        this.updateDots();
+      }
+
+      goToSlide(slideIndex) {
+        this.currentSlide = Math.min(slideIndex, this.maxSlide);
+        this.updateCarousel();
+        this.updateDots();
+      }
+
+      setupEventListeners() {
+        // Arrow buttons
+        this.prevBtn.addEventListener('click', () => this.prevSlide());
+        this.nextBtn.addEventListener('click', () => this.nextSlide());
+
+        // Dot navigation
+        this.dots.forEach((dot, index) => {
+          dot.addEventListener('click', () => this.goToSlide(index));
+        });
+
+        // Touch/swipe support
+        let startX = 0;
+        let moveX = 0;
+
+        this.track.addEventListener('touchstart', (e) => {
+          startX = e.touches[0].clientX;
+        });
+
+        this.track.addEventListener('touchmove', (e) => {
+          moveX = e.touches[0].clientX;
+        });
+
+        this.track.addEventListener('touchend', () => {
+          const diffX = startX - moveX;
+          if (Math.abs(diffX) > 50) { // Minimum swipe distance
+            if (diffX > 0) {
+              this.nextSlide();
+            } else {
+              this.prevSlide();
+            }
+          }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowLeft') this.prevSlide();
+          if (e.key === 'ArrowRight') this.nextSlide();
+        });
+      }
+
+      setupResponsive() {
+        window.addEventListener('resize', () => {
+          const newSlidesToShow = this.getSlidesToShow();
+          if (newSlidesToShow !== this.slidesToShow) {
+            this.slidesToShow = newSlidesToShow;
+            this.maxSlide = this.totalSlides - this.slidesToShow;
+            this.currentSlide = Math.min(this.currentSlide, this.maxSlide);
+            this.updateCarousel();
+          }
+        });
+      }
+
+      // Auto-play functionality
+      startAutoPlay(interval = 4000) {
+        this.autoPlayInterval = setInterval(() => {
+          this.nextSlide();
+        }, interval);
+      }
+
+      stopAutoPlay() {
+        if (this.autoPlayInterval) {
+          clearInterval(this.autoPlayInterval);
+        }
+      }
+    }
+
+    // Initialize carousel when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      const eventsCarousel = new EventsCarousel();
+
+      // Optional: Start auto-play
+      eventsCarousel.startAutoPlay(5000); // Change slide every 5 seconds
+
+      // Pause auto-play on hover
+      const carouselContainer = document.querySelector('#events .relative');
+      carouselContainer.addEventListener('mouseenter', () => eventsCarousel.stopAutoPlay());
+      carouselContainer.addEventListener('mouseleave', () => eventsCarousel.startAutoPlay(5000));
     });
   </script>
 </body>

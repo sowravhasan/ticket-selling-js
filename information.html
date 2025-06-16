@@ -179,17 +179,17 @@
                     <button
                         class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-primary text-primary"
                         data-target="facility">
-                        Facility Information
+                        Seating Chart
                     </button>
                     <button
                         class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 ml-8"
                         data-target="rules">
-                        Rules & Guidelines
+                        Policies
                     </button>
                     <button
                         class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 ml-8"
                         data-target="accessibility">
-                        Accessibility
+                        Amenities
                     </button>
                     <button
                         class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 ml-8"
@@ -206,24 +206,28 @@
             <div id="facility" class="tab-content block">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div data-aos="fade-right">
-                        <img src="assets/information-stadium.png" alt="Patriot Arena Facility"
-                            class="rounded-xl shadow-xl w-full h-auto">
+                        <!-- Light mode arena image (visible in light mode) -->
+                        <img src="assets/arena-light.png" alt="Patriot Arena Facility Layout - Light Mode"
+                            class="arena-image-light rounded-xl shadow-xl w-full h-auto block dark:hidden">
+                        <!-- Dark mode arena image (visible in dark mode) -->
+                        <img src="assets/arena-dark.png" alt="Patriot Arena Facility Layout - Dark Mode"
+                            class="arena-image-dark rounded-xl shadow-xl w-full h-auto hidden dark:block">
                     </div>
                     <div data-aos="fade-left">
-                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">About Our Facility</h2>
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Seating Charts & Layout</h2>
                         <div class="space-y-6 text-gray-600 dark:text-gray-300">
                             <p>
-                                Patriot Arena is a state-of-the-art multipurpose venue designed to host a wide variety
-                                of events, from sporting competitions to concerts, trade shows, and community
-                                gatherings.
+                                Explore our comprehensive seating chart to find the perfect view for your event. Our
+                                arena features multiple seating sections designed to provide exceptional sightlines and
+                                comfort for every guest.
                             </p>
                             <p>
-                                Our facility features a 10,000-seat main arena, multiple conference rooms, exhibition
-                                halls, and modern amenities to ensure an exceptional experience for all guests.
+                                From premium courtside seats to budget-friendly upper-level options, we offer a variety
+                                of seating choices to fit every preference and budget.
                             </p>
 
                             <div class="mt-8 space-y-4">
-                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Arena Features:</h3>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Seating Sections:</h3>
                                 <ul class="space-y-2">
                                     <li class="flex items-start">
                                         <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor"
@@ -232,7 +236,7 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd"></path>
                                         </svg>
-                                        <span>10,000-seat main arena with state-of-the-art acoustics</span>
+                                        <span>Premium Courtside (Sections A1-A4) - $400-500 per seat</span>
                                     </li>
                                     <li class="flex items-start">
                                         <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor"
@@ -241,7 +245,7 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd"></path>
                                         </svg>
-                                        <span>Multiple conference and meeting rooms</span>
+                                        <span>Lower Level (Sections 101-118) - $250-350 per seat</span>
                                     </li>
                                     <li class="flex items-start">
                                         <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor"
@@ -250,7 +254,7 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd"></path>
                                         </svg>
-                                        <span>20,000 sq ft exhibition hall</span>
+                                        <span>Upper Level (Sections 201-230) - $150-200 per seat</span>
                                     </li>
                                     <li class="flex items-start">
                                         <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor"
@@ -259,7 +263,7 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd"></path>
                                         </svg>
-                                        <span>Full-service concessions and catering options</span>
+                                        <span>General Admission (Sections 301-340) - $85-120 per seat</span>
                                     </li>
                                     <li class="flex items-start">
                                         <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor"
@@ -268,7 +272,7 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd"></path>
                                         </svg>
-                                        <span>Free parking for over 3,000 vehicles</span>
+                                        <span>Accessible seating available in all levels with companion seats</span>
                                     </li>
                                 </ul>
                             </div>
@@ -276,53 +280,60 @@
                     </div>
                 </div>
 
-                <!-- Hours and Directions -->
+                <!-- Seating Information Cards -->
                 <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8" data-aos="fade-up">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Hours of Operation</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Seat Features</h3>
                         <div class="space-y-4 text-gray-600 dark:text-gray-300">
-                            <p class="flex justify-between">
-                                <span class="font-medium">Monday - Friday:</span>
-                                <span>9:00 AM - 10:00 PM</span>
+                            <p class="flex items-start">
+                                <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                <span><strong>Premium Seats:</strong> Extra wide, cushioned with cup holders</span>
                             </p>
-                            <p class="flex justify-between">
-                                <span class="font-medium">Saturday:</span>
-                                <span>8:00 AM - 11:00 PM</span>
+                            <p class="flex items-start">
+                                <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                <span><strong>Standard Seats:</strong> Comfortable padding with armrests</span>
                             </p>
-                            <p class="flex justify-between">
-                                <span class="font-medium">Sunday:</span>
-                                <span>10:00 AM - 8:00 PM</span>
-                            </p>
-                            <p class="mt-4 text-sm italic">
-                                *Hours may vary during special events. Please check the event details for specific
-                                times.
+                            <p class="flex items-start">
+                                <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                <span><strong>Row Spacing:</strong> Optimal legroom throughout the venue</span>
                             </p>
                         </div>
                     </div>
 
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8" data-aos="fade-up"
                         data-aos-delay="100">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Directions</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Interactive Features</h3>
                         <div class="space-y-4 text-gray-600 dark:text-gray-300">
                             <p>
-                                Patriot Arena is conveniently located in the heart of the city, easily accessible by car
-                                and public transportation.
-                            </p>
-                            <p class="flex items-center">
-                                <svg class="w-5 h-5 text-primary mr-2" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                    </path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                                <span>123 Stadium Way, Cityville, ST 12345</span>
+                                Use our interactive seating map to explore different views and select the perfect seats
+                                for your event.
                             </p>
                             <div class="mt-4">
                                 <a href="interactive-map.html"
                                     class="inline-flex items-center text-primary hover:text-primary/80 transition-colors">
-                                    <span class="font-medium">View Interactive Map</span>
+                                    <span class="font-medium">View Interactive Seating Map</span>
+                                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="mt-4">
+                                <a href="buy.html"
+                                    class="inline-flex items-center text-primary hover:text-primary/80 transition-colors">
+                                    <span class="font-medium">Purchase Tickets</span>
                                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -337,7 +348,7 @@
             <!-- Rules & Guidelines Tab -->
             <div id="rules" class="tab-content hidden">
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8" data-aos="fade-up">
-                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Arena Rules & Guidelines</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Arena Policies</h2>
 
                     <div class="space-y-8 text-gray-600 dark:text-gray-300">
                         <div>
@@ -423,34 +434,16 @@
             <!-- Accessibility Tab -->
             <div id="accessibility" class="tab-content hidden">
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8" data-aos="fade-up">
-                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Accessibility Services</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Arena Amenities</h2>
 
                     <div class="space-y-8 text-gray-600 dark:text-gray-300">
                         <p>
-                            Patriot Arena is committed to providing an accessible environment for all guests. We offer a
-                            variety of services to ensure everyone can enjoy our events.
+                            Patriot Arena offers a wide range of amenities to enhance your event experience. From dining
+                            options to comfortable facilities, we ensure every guest has access to premium services.
                         </p>
 
                         <div>
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Accessible Seating</h3>
-                            <p>
-                                Accessible seating is available in all sections of the arena. Companions may sit with
-                                guests who require accessible seating. To purchase accessible seating tickets, please
-                                contact our box office at (555) 123-4567.
-                            </p>
-                        </div>
-
-                        <div>
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Parking</h3>
-                            <p>
-                                Accessible parking spaces are available in all parking lots. These spaces are located
-                                close to the entrances and are clearly marked. A valid accessible parking permit must be
-                                displayed.
-                            </p>
-                        </div>
-
-                        <div>
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Additional Services
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Dining & Concessions
                             </h3>
                             <ul class="space-y-2">
                                 <li class="flex items-start">
@@ -458,6 +451,8 @@
                                         <path fill-rule="evenodd"
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                             clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Multiple concession stands throughout the arena</span>
                                 </li>
                                 <li class="flex items-start">
                                     <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -465,7 +460,7 @@
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    <span>Assistive listening devices</span>
+                                    <span>Premium dining options in VIP lounges</span>
                                 </li>
                                 <li class="flex items-start">
                                     <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -473,26 +468,89 @@
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    <span>Sign language interpretation (with advance notice)</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                    <span>Service animals are welcome</span>
+                                    <span>Local craft beer and specialty beverages</span>
                                 </li>
                             </ul>
                         </div>
 
                         <div>
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Contact for
-                                Accessibility Needs</h3>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Facilities & Services
+                            </h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Free Wi-Fi throughout the venue</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Climate-controlled environment</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>ATM machines and mobile payment options</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Family restrooms and baby changing stations</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Accessibility Features
+                            </h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Assistive listening devices available</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Accessible seating in all sections</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-primary mt-1 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Accessible parking spaces available</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Contact Guest Services
+                            </h3>
                             <p>
-                                If you have specific accessibility requirements or questions, please contact our Guest
-                                Services team at (555) 123-4567 or email <a href="mailto:accessibility@patriotarena.com"
-                                    class="text-primary hover:text-primary/80 transition-colors">accessibility@patriotarena.com</a>.
+                                For more information about our amenities or special accommodations, please contact our
+                                Guest
+                                Services team at (555) 123-4567 or email <a href="mailto:info@patriotarena.com"
+                                    class="text-primary hover:text-primary/80 transition-colors">info@patriotarena.com</a>.
                             </p>
                         </div>
                     </div>
