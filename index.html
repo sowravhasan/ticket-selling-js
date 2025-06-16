@@ -398,20 +398,6 @@
       transition: opacity 0.3s ease-in-out;
     }
 
-    .carousel-dot {
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .carousel-dot:hover {
-      transform: scale(1.2);
-    }
-
-    .carousel-dot.active {
-      background-color: #1E3A8A !important;
-      transform: scale(1.1);
-    }
-
     /* Smooth scrolling for carousel */
     @media (prefers-reduced-motion: no-preference) {
       .carousel-track {
@@ -682,18 +668,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Dots Navigation -->
-          <div class="flex justify-center mt-8 space-x-2" id="dotsContainer">
-            <button class="carousel-dot w-3 h-3 rounded-full bg-primary transition-all duration-300"
-              data-slide="0"></button>
-            <button class="carousel-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300"
-              data-slide="1"></button>
-            <button class="carousel-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300"
-              data-slide="2"></button>
-            <button class="carousel-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300"
-              data-slide="3"></button>
-          </div>
         </div>
 
         <!-- Show More Events Button -->
@@ -941,21 +915,21 @@
           });
         }
       });
-    });
-
-    // Events Carousel Functionality
+    });    // Events Carousel Functionality with Continuous Scrolling
     class EventsCarousel {
       constructor() {
         this.track = document.getElementById('carousel-track');
         this.slides = document.querySelectorAll('.carousel-slide');
-        this.dots = document.querySelectorAll('.carousel-dot');
         this.prevBtn = document.getElementById('prevBtn');
         this.nextBtn = document.getElementById('nextBtn');
 
         this.currentSlide = 0;
         this.totalSlides = this.slides.length;
         this.slidesToShow = this.getSlidesToShow();
-        this.maxSlide = this.totalSlides - this.slidesToShow;
+        this.slideWidth = 100 / this.slidesToShow; // Percentage width per slide
+        this.currentPosition = 0; // Current position in percentage
+        this.isAnimating = false;
+        this.autoPlayInterval = null;
 
         this.init();
         this.setupEventListeners();
@@ -970,69 +944,119 @@
 
       init() {
         this.updateCarousel();
-        this.updateDots();
       }
 
       updateCarousel() {
-        const translateX = -(this.currentSlide * (100 / this.slidesToShow));
-        this.track.style.transform = `translateX(${translateX}%)`;
+        this.track.style.transform = `translateX(${this.currentPosition}%)`;
       }
 
-      updateDots() {
-        this.dots.forEach((dot, index) => {
-          dot.classList.toggle('active', index === this.currentSlide);
-        });
-      }
-
+      // Continuous scrolling to next slide
       nextSlide() {
-        if (this.currentSlide < this.maxSlide) {
-          this.currentSlide++;
+        if (this.isAnimating) return;
+
+        this.isAnimating = true;
+        const maxPosition = -(this.totalSlides - this.slidesToShow) * this.slideWidth;
+
+        if (this.currentPosition > maxPosition) {
+          this.currentPosition -= this.slideWidth;
         } else {
-          this.currentSlide = 0; // Loop back to start
+          // Loop back to start for infinite scroll
+          this.currentPosition = 0;
         }
-        this.updateCarousel();
-        this.updateDots();
+
+        this.animateToPosition();
       }
 
+      // Continuous scrolling to previous slide
       prevSlide() {
-        if (this.currentSlide > 0) {
-          this.currentSlide--;
+        if (this.isAnimating) return;
+
+        this.isAnimating = true;
+        const maxPosition = -(this.totalSlides - this.slidesToShow) * this.slideWidth;
+
+        if (this.currentPosition < 0) {
+          this.currentPosition += this.slideWidth;
         } else {
-          this.currentSlide = this.maxSlide; // Loop to end
+          // Loop to end for infinite scroll
+          this.currentPosition = maxPosition;
         }
-        this.updateCarousel();
-        this.updateDots();
+
+        this.animateToPosition();
       }
 
-      goToSlide(slideIndex) {
-        this.currentSlide = Math.min(slideIndex, this.maxSlide);
+      // Smooth animation to target position
+      animateToPosition() {
+        // Add smooth transition
+        this.track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         this.updateCarousel();
-        this.updateDots();
+
+        // Reset animation flag and remove transition after animation
+        setTimeout(() => {
+          this.isAnimating = false;
+          this.track.style.transition = '';
+        }, 500);
+      }
+
+      // Go to specific slide (for dot navigation)
+      goToSlide(slideIndex) {
+        if (this.isAnimating) return;
+
+        this.isAnimating = true;
+        this.currentPosition = -slideIndex * this.slideWidth;
+        this.animateToPosition();
+      }
+
+      // Continuous auto-scroll functionality
+      startContinuousScroll() {
+        this.stopAutoPlay(); // Stop any existing auto-play
+
+        const scrollStep = () => {
+          if (!this.isAnimating) {
+            this.nextSlide();
+          }
+        };
+
+        // Start continuous scrolling every 3 seconds
+        this.autoPlayInterval = setInterval(scrollStep, 3000);
       }
 
       setupEventListeners() {
-        // Arrow buttons
-        this.prevBtn.addEventListener('click', () => this.prevSlide());
-        this.nextBtn.addEventListener('click', () => this.nextSlide());
-
-        // Dot navigation
-        this.dots.forEach((dot, index) => {
-          dot.addEventListener('click', () => this.goToSlide(index));
+        // Arrow buttons with continuous scrolling
+        this.prevBtn.addEventListener('click', () => {
+          this.stopAutoPlay();
+          this.prevSlide();
+          // Restart auto-scroll after manual interaction
+          setTimeout(() => this.startContinuousScroll(), 5000);
         });
 
-        // Touch/swipe support
+        this.nextBtn.addEventListener('click', () => {
+          this.stopAutoPlay();
+          this.nextSlide();
+          // Restart auto-scroll after manual interaction
+          setTimeout(() => this.startContinuousScroll(), 5000);
+        });
+
+        // Touch/swipe support for continuous scrolling
         let startX = 0;
         let moveX = 0;
+        let isDragging = false;
 
         this.track.addEventListener('touchstart', (e) => {
           startX = e.touches[0].clientX;
+          isDragging = true;
+          this.stopAutoPlay();
         });
 
         this.track.addEventListener('touchmove', (e) => {
+          if (!isDragging) return;
           moveX = e.touches[0].clientX;
+          e.preventDefault();
         });
 
         this.track.addEventListener('touchend', () => {
+          if (!isDragging) return;
+          isDragging = false;
+
           const diffX = startX - moveX;
           if (Math.abs(diffX) > 50) { // Minimum swipe distance
             if (diffX > 0) {
@@ -1041,12 +1065,23 @@
               this.prevSlide();
             }
           }
+
+          // Restart auto-scroll after manual interaction
+          setTimeout(() => this.startContinuousScroll(), 5000);
         });
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-          if (e.key === 'ArrowLeft') this.prevSlide();
-          if (e.key === 'ArrowRight') this.nextSlide();
+          if (e.key === 'ArrowLeft') {
+            this.stopAutoPlay();
+            this.prevSlide();
+            setTimeout(() => this.startContinuousScroll(), 5000);
+          }
+          if (e.key === 'ArrowRight') {
+            this.stopAutoPlay();
+            this.nextSlide();
+            setTimeout(() => this.startContinuousScroll(), 5000);
+          }
         });
       }
 
@@ -1055,23 +1090,27 @@
           const newSlidesToShow = this.getSlidesToShow();
           if (newSlidesToShow !== this.slidesToShow) {
             this.slidesToShow = newSlidesToShow;
-            this.maxSlide = this.totalSlides - this.slidesToShow;
-            this.currentSlide = Math.min(this.currentSlide, this.maxSlide);
+            this.slideWidth = 100 / this.slidesToShow;
+
+            // Recalculate current position to maintain relative position
+            const currentSlideIndex = Math.floor(Math.abs(this.currentPosition) / (100 / (this.totalSlides)));
+            this.currentPosition = -currentSlideIndex * this.slideWidth;
+
             this.updateCarousel();
           }
         });
       }
 
-      // Auto-play functionality
-      startAutoPlay(interval = 4000) {
-        this.autoPlayInterval = setInterval(() => {
-          this.nextSlide();
-        }, interval);
+      // Start auto-play functionality (legacy support)
+      startAutoPlay(interval = 3000) {
+        this.startContinuousScroll();
       }
 
+      // Stop auto-play functionality
       stopAutoPlay() {
         if (this.autoPlayInterval) {
           clearInterval(this.autoPlayInterval);
+          this.autoPlayInterval = null;
         }
       }
     }
@@ -1080,13 +1119,17 @@
     document.addEventListener('DOMContentLoaded', function () {
       const eventsCarousel = new EventsCarousel();
 
-      // Optional: Start auto-play
-      eventsCarousel.startAutoPlay(5000); // Change slide every 5 seconds
+      // Start continuous auto-scroll every 3 seconds
+      eventsCarousel.startContinuousScroll();
 
-      // Pause auto-play on hover
-      const carouselContainer = document.querySelector('#events .relative');
-      carouselContainer.addEventListener('mouseenter', () => eventsCarousel.stopAutoPlay());
-      carouselContainer.addEventListener('mouseleave', () => eventsCarousel.startAutoPlay(5000));
+      // Pause auto-scroll on hover, resume on mouse leave
+      const carouselContainer = document.querySelector('#events .carousel-container');
+      carouselContainer.addEventListener('mouseenter', () => {
+        eventsCarousel.stopAutoPlay();
+      });
+      carouselContainer.addEventListener('mouseleave', () => {
+        eventsCarousel.startContinuousScroll();
+      });
     });
   </script>
 </body>
