@@ -111,50 +111,78 @@
         .stage-section,
         .section-label {
             cursor: pointer;
-            transition: all 0.25s ease-out;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
         .stage-section.selected,
         .section-label.selected {
-            transform: scale(1.02);
-            /* Minimal scaling to reduce movement */
-            filter: drop-shadow(0 4px 8px rgba(30, 58, 138, 0.3));
-            stroke-width: 1.5px !important;
+            transform: scale(1.05) !important;
+            /* Subtle scaling to avoid layout disruption */
+            filter: drop-shadow(0 8px 20px rgba(59, 130, 246, 0.6)) drop-shadow(0 0 15px rgba(59, 130, 246, 0.4));
+            stroke-width: 3px !important;
             stroke: #3B82F6 !important;
-            /* Using a brighter blue for better visibility */
-            animation: none;
-            /* Removing animation to prevent movement */
+            z-index: 100;
+            animation: selectedGlow 2s infinite ease-in-out;
+        }
+
+        /* Subtle glow animation for selected seats - no scaling movement */
+        @keyframes selectedGlow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 8px 20px rgba(59, 130, 246, 0.6)) drop-shadow(0 0 15px rgba(59, 130, 246, 0.4));
+                stroke-width: 3px;
+            }
+
+            50% {
+                filter: drop-shadow(0 12px 30px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 25px rgba(59, 130, 246, 0.6));
+                stroke-width: 4px;
+            }
+        }
+
+        /* Hover effects for better user interaction */
+        .stage-section:hover:not(.selected) {
+            transform: scale(1.02);
+            /* Very subtle hover effect */
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+        }
+
+        .stage-section:hover:not(.selected) text {
+            font-weight: 600;
+            fill: #1E40AF;
+        }
+
+        /* Ensure selected sections have highest z-index */
+        .stage-section.selected {
+            z-index: 1000;
+            position: relative;
         }
 
         /* Add a visible background behind selected section text for readability */
         .section-label.selected text {
             fill: #FFFFFF !important;
-            /* White text */
-            font-size: 12.5px !important;
-            /* Slightly larger but not too much */
-            font-weight: 500 !important;
-            /* Medium weight is cleaner */
-            stroke: #000000;
-            stroke-width: 0.5px;
-            /* Thinner stroke for clarity */
+            font-size: 14px !important;
+            /* Larger text for better visibility */
+            font-weight: 700 !important;
+            /* Bold weight for prominence */
+            stroke: #1E40AF;
+            stroke-width: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .section-label text {
             font-size: 12px;
-            font-weight: 400;
-            /* Regular weight for better readability */
+            font-weight: 500;
             fill: white;
-            /* Subtle outline for contrast */
             stroke: #000000;
             stroke-width: 0.3px;
+            transition: all 0.3s ease;
         }
 
         .section-label text:hover {
-            font-size: 12.5px;
-            /* Very slight size increase on hover */
+            font-size: 13px;
             fill: #FFFFFF;
-            /* Keep white for better readability */
             stroke: #000000;
             stroke-width: 0.5px;
         }
@@ -162,10 +190,14 @@
         /* Better text readability for all selected sections and VIP sections */
         .stage-section.selected text {
             fill: #FFFFFF !important;
-            /* Bright white text */
-            font-weight: 600 !important;
-            stroke: #000000;
-            stroke-width: 1px;
+            font-weight: 700 !important;
+            /* Bold for better visibility */
+            font-size: 18px !important;
+            /* Slightly smaller to avoid layout issues */
+            stroke: #1E40AF;
+            stroke-width: 1.5px;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+            /* Removed transform to prevent movement */
         }
 
         /* Gentler pulse animation */
@@ -481,8 +513,8 @@
                                             <stop offset="100%" style="stop-color:#FCD34D;stop-opacity:1" />
                                         </linearGradient>
                                         <linearGradient id="premiumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#D1FAE5;stop-opacity:1" />
-                                            <stop offset="100%" style="stop-color:#34D399;stop-opacity:1" />
+                                            <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#F8FAFC;stop-opacity:1" />
                                         </linearGradient>
                                         <linearGradient id="standardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                             <stop offset="0%" style="stop-color:#DBEAFE;stop-opacity:1" />
@@ -786,80 +818,80 @@
                                     <g class="stage-section" data-section="PREM-1" data-price="450" data-available="40"
                                         data-level="Premium">
                                         <rect x="100" y="150" width="100" height="80" rx="10"
-                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
-                                        <text x="150" y="185" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            fill="url(#premiumGradient)" stroke="#6B7280" stroke-width="2" />
+                                        <text x="150" y="185" text-anchor="middle" fill="#374151" font-weight="bold"
                                             font-size="16">PREM 1</text>
-                                        <text x="150" y="205" text-anchor="middle" fill="#065F46"
+                                        <text x="150" y="205" text-anchor="middle" fill="#374151"
                                             font-size="12">$450</text>
                                     </g>
 
                                     <g class="stage-section" data-section="PREM-2" data-price="500" data-available="35"
                                         data-level="Premium">
                                         <rect x="250" y="100" width="120" height="60" rx="10"
-                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
-                                        <text x="310" y="135" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            fill="url(#premiumGradient)" stroke="#6B7280" stroke-width="2" />
+                                        <text x="310" y="135" text-anchor="middle" fill="#374151" font-weight="bold"
                                             font-size="16">PREM 2</text>
-                                        <text x="310" y="152" text-anchor="middle" fill="#065F46"
+                                        <text x="310" y="152" text-anchor="middle" fill="#374151"
                                             font-size="12">$500</text>
                                     </g>
 
                                     <g class="stage-section" data-section="PREM-3" data-price="500" data-available="35"
                                         data-level="Premium">
                                         <rect x="430" y="100" width="120" height="60" rx="10"
-                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
-                                        <text x="490" y="135" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            fill="url(#premiumGradient)" stroke="#6B7280" stroke-width="2" />
+                                        <text x="490" y="135" text-anchor="middle" fill="#374151" font-weight="bold"
                                             font-size="16">PREM 3</text>
-                                        <text x="490" y="152" text-anchor="middle" fill="#065F46"
+                                        <text x="490" y="152" text-anchor="middle" fill="#374151"
                                             font-size="12">$500</text>
                                     </g>
 
                                     <g class="stage-section" data-section="PREM-4" data-price="450" data-available="40"
                                         data-level="Premium">
                                         <rect x="600" y="150" width="100" height="80" rx="10"
-                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
-                                        <text x="650" y="185" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            fill="url(#premiumGradient)" stroke="#6B7280" stroke-width="2" />
+                                        <text x="650" y="185" text-anchor="middle" fill="#374151" font-weight="bold"
                                             font-size="16">PREM 4</text>
-                                        <text x="650" y="205" text-anchor="middle" fill="#065F46"
+                                        <text x="650" y="205" text-anchor="middle" fill="#374151"
                                             font-size="12">$450</text>
                                     </g>
 
                                     <g class="stage-section" data-section="PREM-5" data-price="450" data-available="40"
                                         data-level="Premium">
                                         <rect x="100" y="370" width="100" height="80" rx="10"
-                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
-                                        <text x="150" y="405" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            fill="url(#premiumGradient)" stroke="#6B7280" stroke-width="2" />
+                                        <text x="150" y="405" text-anchor="middle" fill="#374151" font-weight="bold"
                                             font-size="16">PREM 5</text>
-                                        <text x="150" y="425" text-anchor="middle" fill="#065F46"
+                                        <text x="150" y="425" text-anchor="middle" fill="#374151"
                                             font-size="12">$450</text>
                                     </g>
 
                                     <g class="stage-section" data-section="PREM-6" data-price="400" data-available="45"
                                         data-level="Premium">
                                         <rect x="250" y="440" width="120" height="60" rx="10"
-                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
-                                        <text x="310" y="475" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            fill="url(#premiumGradient)" stroke="#6B7280" stroke-width="2" />
+                                        <text x="310" y="475" text-anchor="middle" fill="#374151" font-weight="bold"
                                             font-size="16">PREM 6</text>
-                                        <text x="310" y="492" text-anchor="middle" fill="#065F46"
+                                        <text x="310" y="492" text-anchor="middle" fill="#374151"
                                             font-size="12">$400</text>
                                     </g>
 
                                     <g class="stage-section" data-section="PREM-7" data-price="400" data-available="45"
                                         data-level="Premium">
                                         <rect x="430" y="440" width="120" height="60" rx="10"
-                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
-                                        <text x="490" y="475" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            fill="url(#premiumGradient)" stroke="#6B7280" stroke-width="2" />
+                                        <text x="490" y="475" text-anchor="middle" fill="#374151" font-weight="bold"
                                             font-size="16">PREM 7</text>
-                                        <text x="490" y="492" text-anchor="middle" fill="#065F46"
+                                        <text x="490" y="492" text-anchor="middle" fill="#374151"
                                             font-size="12">$400</text>
                                     </g>
 
                                     <g class="stage-section" data-section="PREM-8" data-price="450" data-available="40"
                                         data-level="Premium">
                                         <rect x="600" y="370" width="100" height="80" rx="10"
-                                            fill="url(#premiumGradient)" stroke="#10B981" stroke-width="2" />
-                                        <text x="650" y="405" text-anchor="middle" fill="#065F46" font-weight="bold"
+                                            fill="url(#premiumGradient)" stroke="#6B7280" stroke-width="2" />
+                                        <text x="650" y="405" text-anchor="middle" fill="#374151" font-weight="bold"
                                             font-size="16">PREM 8</text>
-                                        <text x="650" y="425" text-anchor="middle" fill="#065F46"
+                                        <text x="650" y="425" text-anchor="middle" fill="#374151"
                                             font-size="12">$450</text>
                                     </g>
 
