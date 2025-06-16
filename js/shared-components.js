@@ -140,10 +140,10 @@ function addHeader() {
 // Add Footer Component
 function addFooter() {
   const footer = document.createElement("footer");
-  footer.innerHTML = `        <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 text-white relative overflow-hidden">
+  footer.innerHTML = `        <div class="bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-800 dark:text-white relative overflow-hidden transition-all duration-300">
             <!-- Background Pattern -->
             <div class="absolute inset-0 opacity-10">
-                <div class="absolute inset-0 bg-grid-slate-100 bg-[length:40px_40px] dark:bg-grid-slate-100/[0.05]"></div>
+                <div class="absolute inset-0 bg-grid-slate-900 dark:bg-grid-slate-100 bg-[length:40px_40px] dark:bg-grid-slate-100/[0.05]"></div>
             </div>
             
             <!-- Main Footer Content -->
@@ -156,19 +156,19 @@ function addFooter() {
                             <img src="assets/logo.png" alt="Patriot Arena Logo" class="h-12 w-auto mr-4">
                             <div>
                                 <h3 class="text-2xl font-bold" style="color: #2D83A5;">Patriot Arena</h3>
-                                <p class="text-gray-300 dark:text-gray-400 text-sm">Uniting Our Community, One Event at a Time</p>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">Uniting Our Community, One Event at a Time</p>
                             </div>
                         </div>
-                        <p class="text-gray-300 dark:text-gray-400 mb-6 max-w-md leading-relaxed">
+                        <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md leading-relaxed">
                             Experience world-class entertainment and events at Boston's premier venue. From concerts to sports, 
                             we bring unforgettable moments to life.
                         </p>
                         <!-- Newsletter Signup -->
                         <div class="flex flex-col sm:flex-row gap-3 max-w-md">
                             <input type="email" placeholder="Enter your email" 
-                                   class="flex-1 px-4 py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg 
+                                   class="flex-1 px-4 py-3 bg-white/80 dark:bg-white/10 border border-gray-300 dark:border-white/20 rounded-lg 
                                           focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent 
-                                          text-white placeholder-gray-300 dark:placeholder-gray-400 backdrop-blur-sm"
+                                          text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 backdrop-blur-sm"
                                    style="--tw-ring-color: #243F88;">
                             <button class="px-6 py-3 text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 
                                            shadow-lg hover:shadow-xl whitespace-nowrap hover:opacity-90"
@@ -180,40 +180,39 @@ function addFooter() {
 
                     <!-- Quick Links -->
                     <div>
-                        <h4 class="text-lg font-semibold mb-6 text-white">Quick Links</h4>
+                        <h4 class="text-lg font-semibold mb-6 text-gray-800 dark:text-white">Quick Links</h4>
                         <ul class="space-y-3">
-                            <li><a href="index.html" class="text-gray-300 dark:text-gray-400 transition-colors duration-300 flex items-center group"
+                            <li><a href="index.html" class="text-gray-600 dark:text-gray-400 transition-colors duration-300 flex items-center group"
                                    style="--hover-color: #243F88;"
                                    onmouseover="this.style.color='#243F88'" 
                                    onmouseout="this.style.color=''">
                                 <span class="w-2 h-2 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="background-color: #243F88;"></span>
                                 Home
                             </a></li>
-                            <li><a href="box-office.html" class="text-gray-300 dark:text-gray-400 transition-colors duration-300 flex items-center group"
+                            <li><a href="box-office.html" class="text-gray-600 dark:text-gray-400 transition-colors duration-300 flex items-center group"
                                    onmouseover="this.style.color='#243F88'" 
                                    onmouseout="this.style.color=''">
                                 <span class="w-2 h-2 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="background-color: #243F88;"></span>
                                 Box Office
                             </a></li>
-                            <li><a href="planner.html" class="text-gray-300 dark:text-gray-400 transition-colors duration-300 flex items-center group"
-                                   onmouseover="this.style.color='#243F88'" 
+                            <li><a href="planner.html" class="text-gray-600 dark:text-gray-400 transition-colors duration-300 flex items-center group"                                   onmouseover="this.style.color='#243F88'" 
                                    onmouseout="this.style.color=''">
                                 <span class="w-2 h-2 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="background-color: #243F88;"></span>
                                 Event Planning
                             </a></li>
-                            <li><a href="calendar.html" class="text-gray-300 dark:text-gray-400 transition-colors duration-300 flex items-center group"
+                            <li><a href="calendar.html" class="text-gray-600 dark:text-gray-400 transition-colors duration-300 flex items-center group"
                                    onmouseover="this.style.color='#243F88'" 
                                    onmouseout="this.style.color=''">
                                 <span class="w-2 h-2 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="background-color: #243F88;"></span>
                                 Event Calendar
                             </a></li>
-                            <li><a href="information.html" class="text-gray-300 dark:text-gray-400 transition-colors duration-300 flex items-center group"
+                            <li><a href="information.html" class="text-gray-600 dark:text-gray-400 transition-colors duration-300 flex items-center group"
                                    onmouseover="this.style.color='#243F88'" 
                                    onmouseout="this.style.color=''">
                                 <span class="w-2 h-2 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="background-color: #243F88;"></span>
                                 Information
                             </a></li>
-                            <li><a href="interactive-map.html" class="text-gray-300 dark:text-gray-400 transition-colors duration-300 flex items-center group"
+                            <li><a href="interactive-map.html" class="text-gray-600 dark:text-gray-400 transition-colors duration-300 flex items-center group"
                                    onmouseover="this.style.color='#243F88'" 
                                    onmouseout="this.style.color=''">
                                 <span class="w-2 h-2 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="background-color: #243F88;"></span>
@@ -224,7 +223,7 @@ function addFooter() {
 
                     <!-- Contact Info -->
                     <div>
-                        <h4 class="text-lg font-semibold mb-6 text-white">Contact Info</h4>
+                        <h4 class="text-lg font-semibold mb-6 text-gray-800 dark:text-white">Contact Info</h4>
                         <div class="space-y-4">
                             <div class="flex items-start">
                                 <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3 flex-shrink-0" style="background-color: #243F88;">
@@ -235,8 +234,8 @@ function addFooter() {
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-white font-medium">Address</p>
-                                    <p class="text-gray-300 dark:text-gray-400 text-sm">123 Arena Way<br>Boston, MA 02108</p>
+                                    <p class="text-gray-800 dark:text-white font-medium">Address</p>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">123 Arena Way<br>Boston, MA 02108</p>
                                 </div>
                             </div>
                             <div class="flex items-start">
@@ -247,8 +246,8 @@ function addFooter() {
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-white font-medium">Phone</p>
-                                    <p class="text-gray-300 dark:text-gray-400 text-sm">(555) 123-4567</p>
+                                    <p class="text-gray-800 dark:text-white font-medium">Phone</p>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">(555) 123-4567</p>
                                 </div>
                             </div>
                             <div class="flex items-start">
@@ -259,54 +258,58 @@ function addFooter() {
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-white font-medium">Email</p>
-                                    <p class="text-gray-300 dark:text-gray-400 text-sm">info@patriotarena.com</p>
+                                    <p class="text-gray-800 dark:text-white font-medium">Email</p>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">info@patriotarena.com</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>                <!-- Bottom Section -->
-                <div class="border-t border-white/10 dark:border-white/5 pt-8">
+                <div class="border-t border-gray-300 dark:border-white/10 pt-8">
                     <div class="flex flex-col lg:flex-row justify-between items-center">
                         <!-- Copyright -->
                         <div class="text-center lg:text-left mb-6 lg:mb-0">
-                            <p class="text-gray-300 dark:text-gray-400 text-sm">
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">
                                 &copy; 2025 Patriot Arena. All rights reserved. 
                                 <span class="hidden sm:inline">Made with ❤️ in Boston.</span>
                             </p>
                             <div class="flex flex-wrap justify-center lg:justify-start gap-4 mt-2">
-                                <a href="#" class="text-gray-400 dark:text-gray-500 transition-colors duration-300 text-xs"
+                                <a href="#" class="text-gray-500 dark:text-gray-500 transition-colors duration-300 text-xs"
                                    onmouseover="this.style.color='#243F88'" 
                                    onmouseout="this.style.color=''">Privacy Policy</a>
-                                <a href="#" class="text-gray-400 dark:text-gray-500 transition-colors duration-300 text-xs"
+                                <a href="#" class="text-gray-500 dark:text-gray-500 transition-colors duration-300 text-xs"
                                    onmouseover="this.style.color='#243F88'" 
                                    onmouseout="this.style.color=''">Terms of Service</a>
-                                <a href="#" class="text-gray-400 dark:text-gray-500 transition-colors duration-300 text-xs"
+                                <a href="#" class="text-gray-500 dark:text-gray-500 transition-colors duration-300 text-xs"
                                    onmouseover="this.style.color='#243F88'" 
                                    onmouseout="this.style.color=''">Accessibility</a>
                             </div>
-                        </div>
-
-                        <!-- Social Media -->
+                        </div>                        <!-- Social Media -->
                         <div class="flex items-center space-x-4">
-                            <p class="text-gray-300 dark:text-gray-400 text-sm mr-4 hidden sm:block">Follow Us:</p>
-                            <a href="#" class="w-12 h-12 bg-white/10 dark:bg-white/5 hover:opacity-90
-                                           rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 group"
-                               onmouseover="this.style.backgroundColor='#243F88'" 
-                               onmouseout="this.style.backgroundColor=''">
-                                <img src="assets/facebook-logo.png" alt="Facebook" class="w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mr-4 hidden sm:block">Follow Us:</p>
+                            <a href="#" class="w-12 h-12 dark:bg-white/10 dark:hover:bg-white/20
+                                           rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 group 
+                                           border-2 dark:border-white/20 shadow-lg dark:shadow-none"
+                               style="background-color: #243F88; border-color: #243F88;"
+                               onmouseover="this.style.transform='scale(1.1)'; this.style.opacity='0.9'" 
+                               onmouseout="this.style.transform=''; this.style.opacity=''">
+                                <img src="assets/facebook-logo.png" alt="Facebook" class="w-6 h-6 opacity-100 transition-opacity duration-300 brightness-0 invert dark:brightness-100 dark:invert-0">
                             </a>
-                            <a href="#" class="w-12 h-12 bg-white/10 dark:bg-white/5 hover:opacity-90
-                                           rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 group"
-                               onmouseover="this.style.backgroundColor='#243F88'" 
-                               onmouseout="this.style.backgroundColor=''">
-                                <img src="assets/twitter-logo.png" alt="Twitter" class="w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="#" class="w-12 h-12 dark:bg-white/10 dark:hover:bg-white/20
+                                           rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 group 
+                                           border-2 dark:border-white/20 shadow-lg dark:shadow-none"
+                               style="background-color: #243F88; border-color: #243F88;"
+                               onmouseover="this.style.transform='scale(1.1)'; this.style.opacity='0.9'" 
+                               onmouseout="this.style.transform=''; this.style.opacity=''">
+                                <img src="assets/twitter-logo.png" alt="Twitter" class="w-6 h-6 opacity-100 transition-opacity duration-300 brightness-0 invert dark:brightness-100 dark:invert-0">
                             </a>
-                            <a href="#" class="w-12 h-12 bg-white/10 dark:bg-white/5 hover:opacity-90
-                                           rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 group"
-                               onmouseover="this.style.backgroundColor='#243F88'" 
-                               onmouseout="this.style.backgroundColor=''">
-                                <img src="assets/instagram-logo.png" alt="Instagram" class="w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="#" class="w-12 h-12 dark:bg-white/10 dark:hover:bg-white/20
+                                           rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 group 
+                                           border-2 dark:border-white/20 shadow-lg dark:shadow-none"
+                               style="background-color: #243F88; border-color: #243F88;"
+                               onmouseover="this.style.transform='scale(1.1)'; this.style.opacity='0.9'" 
+                               onmouseout="this.style.transform=''; this.style.opacity=''">
+                                <img src="assets/instagram-logo.png" alt="Instagram" class="w-6 h-6 opacity-100 transition-opacity duration-300 brightness-0 invert dark:brightness-100 dark:invert-0">
                             </a>
                         </div>
                     </div>
